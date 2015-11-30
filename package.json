@@ -19,10 +19,37 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ansi-bgblack": "^0.1.1",
+    "ansi-bgblue": "^0.1.1",
+    "ansi-bgcyan": "^0.1.1",
+    "ansi-bggreen": "^0.1.1",
+    "ansi-bgmagenta": "^0.1.1",
+    "ansi-bgred": "^0.1.1",
+    "ansi-bgwhite": "^0.1.1",
+    "ansi-bgyellow": "^0.1.1",
+    "ansi-black": "^0.1.1",
+    "ansi-blue": "^0.1.1",
+    "ansi-bold": "^0.1.1",
+    "ansi-cyan": "^0.1.1",
+    "ansi-dim": "^0.1.1",
+    "ansi-gray": "^0.1.1",
+    "ansi-green": "^0.1.1",
+    "ansi-grey": "^0.1.1",
+    "ansi-hidden": "^0.1.1",
+    "ansi-inverse": "^0.1.1",
+    "ansi-italic": "^0.1.1",
+    "ansi-magenta": "^0.1.1",
+    "ansi-red": "^0.1.1",
+    "ansi-reset": "^0.1.1",
+    "ansi-strikethrough": "^0.1.1",
+    "ansi-underline": "^0.1.1",
+    "ansi-white": "^0.1.1",
+    "ansi-yellow": "^0.1.1",
+    "lazy-cache": "^0.2.4"
+  },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "mocha": "*"
   },
   "keywords": []
 }
