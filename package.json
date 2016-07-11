@@ -1,7 +1,7 @@
 {
   "name": "ansi-colors",
   "description": "Collection of ansi colors and styles.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/doowb/ansi-colors",
   "author": "Brian Woodward (https://github.com/doowb)",
   "repository": "doowb/ansi-colors",
