@@ -46,42 +46,28 @@
     "ansi-underline": "^0.1.1",
     "ansi-white": "^0.1.1",
     "ansi-yellow": "^0.1.1",
-    "lazy-cache": "^0.2.4"
+    "lazy-cache": "^2.0.1"
   },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.9",
+    "mocha": "^2.5.3"
   },
   "verb": {
-    "related": {
-      "list": [
-        "ansi-bgblack",
-        "ansi-bgblue",
-        "ansi-bgcyan",
-        "ansi-bggreen",
-        "ansi-bgmagenta",
-        "ansi-bgred",
-        "ansi-bgwhite",
-        "ansi-bgyellow",
-        "ansi-black",
-        "ansi-blue",
-        "ansi-bold",
-        "ansi-cyan",
-        "ansi-dim",
-        "ansi-gray",
-        "ansi-green",
-        "ansi-grey",
-        "ansi-hidden",
-        "ansi-inverse",
-        "ansi-italic",
-        "ansi-magenta",
-        "ansi-red",
-        "ansi-reset",
-        "ansi-strikethrough",
-        "ansi-underline",
-        "ansi-white",
-        "ansi-yellow"
-      ]
-    }
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
+    },
+    "reflinks": [
+      "verb-readme-generator",
+      "verb"
+    ]
   },
   "keywords": [
     "ansi-bgblack",
