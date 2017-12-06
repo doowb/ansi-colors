@@ -1,7 +1,7 @@
 /*!
  * ansi-colors <https://github.com/doowb/ansi-colors>
  *
- * Copyright (c) 2015 .
+ * Copyright (c) 2015-2017, Brian Woodward.
  * Licensed under the MIT license.
  */
 

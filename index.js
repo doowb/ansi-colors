@@ -1,8 +1,8 @@
 /*!
  * ansi-colors <https://github.com/doowb/ansi-colors>
  *
- * Copyright (c) 2015, Brian Woodward.
- * Licensed under the MIT License.
+ * Copyright (c) 2015-2017, Brian Woodward.
+ * Released under the MIT License.
  */
 
 'use strict';
@@ -11,25 +11,7 @@
  * Module dependencies
  */
 
-var colors = require('lazy-cache')(require);
-
-/**
- * Temporarily re-assign `require` to trick browserify and
- * webpack into reconizing lazy dependencies.
- *
- * This tiny bit of ugliness has the huge dual advantage of
- * only loading modules that are actually called at some
- * point in the lifecycle of the application, whilst also
- * allowing browserify and webpack to find modules that
- * are depended on but never actually called.
- */
-
-var fn = require;
-require = colors;
-
-/**
- * Lazily required module dependencies
- */
+var wrap = require('ansi-wrap');
 
 /**
  * Wrap a string with ansi codes to create a black background.
@@ -44,7 +26,9 @@ require = colors;
  * @name  bgblack
  */
 
-require('ansi-bgblack', 'bgblack');
+exports.bgblack = function bgblack(message) {
+  return wrap(40, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a blue background.
@@ -59,7 +43,9 @@ require('ansi-bgblack', 'bgblack');
  * @name  bgblue
  */
 
-require('ansi-bgblue', 'bgblue');
+exports.bgblue = function bgblue(message) {
+  return wrap(44, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a cyan background.
@@ -74,7 +60,9 @@ require('ansi-bgblue', 'bgblue');
  * @name  bgcyan
  */
 
-require('ansi-bgcyan', 'bgcyan');
+exports.bgcyan = function bgcyan(message) {
+  return wrap(46, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a green background.
@@ -89,7 +77,9 @@ require('ansi-bgcyan', 'bgcyan');
  * @name  bggreen
  */
 
-require('ansi-bggreen', 'bggreen');
+exports.bggreen = function bggreen(message) {
+  return wrap(42, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a magenta background.
@@ -104,7 +94,9 @@ require('ansi-bggreen', 'bggreen');
  * @name  bgmagenta
  */
 
-require('ansi-bgmagenta', 'bgmagenta');
+exports.bgmagenta = function bgmagenta(message) {
+  return wrap(45, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a red background.
@@ -119,7 +111,9 @@ require('ansi-bgmagenta', 'bgmagenta');
  * @name  bgred
  */
 
-require('ansi-bgred', 'bgred');
+exports.bgred = function bgred(message) {
+  return wrap(41, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a white background.
@@ -134,7 +128,9 @@ require('ansi-bgred', 'bgred');
  * @name  bgwhite
  */
 
-require('ansi-bgwhite', 'bgwhite');
+exports.bgwhite = function bgwhite(message) {
+  return wrap(47, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create a yellow background.
@@ -149,7 +145,9 @@ require('ansi-bgwhite', 'bgwhite');
  * @name  bgyellow
  */
 
-require('ansi-bgyellow', 'bgyellow');
+exports.bgyellow = function bgyellow(message) {
+  return wrap(43, 49, message);
+};
 
 /**
  * Wrap a string with ansi codes to create black text.
@@ -164,7 +162,9 @@ require('ansi-bgyellow', 'bgyellow');
  * @name  black
  */
 
-require('ansi-black', 'black');
+exports.black = function black(message) {
+  return wrap(30, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create blue text.
@@ -179,7 +179,9 @@ require('ansi-black', 'black');
  * @name  blue
  */
 
-require('ansi-blue', 'blue');
+exports.blue = function blue(message) {
+  return wrap(34, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create bold text.
@@ -194,7 +196,9 @@ require('ansi-blue', 'blue');
  * @name  bold
  */
 
-require('ansi-bold', 'bold');
+exports.bold = function bold(message) {
+  return wrap(1, 22, message);
+};
 
 /**
  * Wrap a string with ansi codes to create cyan text.
@@ -209,7 +213,9 @@ require('ansi-bold', 'bold');
  * @name  cyan
  */
 
-require('ansi-cyan', 'cyan');
+exports.cyan = function cyan(message) {
+  return wrap(36, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create dim text.
@@ -224,7 +230,9 @@ require('ansi-cyan', 'cyan');
  * @name  dim
  */
 
-require('ansi-dim', 'dim');
+exports.dim = function dim(message) {
+  return wrap(2, 22, message);
+};
 
 /**
  * Wrap a string with ansi codes to create gray text.
@@ -239,7 +247,9 @@ require('ansi-dim', 'dim');
  * @name  gray
  */
 
-require('ansi-gray', 'gray');
+exports.gray = function gray(message) {
+  return wrap(90, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create green text.
@@ -254,7 +264,9 @@ require('ansi-gray', 'gray');
  * @name  green
  */
 
-require('ansi-green', 'green');
+exports.green = function green(message) {
+  return wrap(32, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create grey text.
@@ -269,7 +281,9 @@ require('ansi-green', 'green');
  * @name  grey
  */
 
-require('ansi-grey', 'grey');
+exports.grey = function grey(message) {
+  return wrap(90, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create hidden text.
@@ -284,7 +298,9 @@ require('ansi-grey', 'grey');
  * @name  hidden
  */
 
-require('ansi-hidden', 'hidden');
+exports.hidden = function hidden(message) {
+  return wrap(8, 28, message);
+};
 
 /**
  * Wrap a string with ansi codes to create inverse text.
@@ -299,7 +315,9 @@ require('ansi-hidden', 'hidden');
  * @name  inverse
  */
 
-require('ansi-inverse', 'inverse');
+exports.inverse = function inverse(message) {
+  return wrap(7, 27, message);
+};
 
 /**
  * Wrap a string with ansi codes to create italic text.
@@ -314,7 +332,9 @@ require('ansi-inverse', 'inverse');
  * @name  italic
  */
 
-require('ansi-italic', 'italic');
+exports.italic = function italic(message) {
+  return wrap(3, 23, message);
+};
 
 /**
  * Wrap a string with ansi codes to create magenta text.
@@ -329,7 +349,9 @@ require('ansi-italic', 'italic');
  * @name  magenta
  */
 
-require('ansi-magenta', 'magenta');
+exports.magenta = function magenta(message) {
+  return wrap(35, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create red text.
@@ -344,7 +366,9 @@ require('ansi-magenta', 'magenta');
  * @name  red
  */
 
-require('ansi-red', 'red');
+exports.red = function red(message) {
+  return wrap(31, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to reset ansi colors currently on the string.
@@ -359,7 +383,9 @@ require('ansi-red', 'red');
  * @name  reset
  */
 
-require('ansi-reset', 'reset');
+exports.reset = function reset(message) {
+  return wrap(0, 0, message);
+};
 
 /**
  * Wrap a string with ansi codes to add a strikethrough to the text.
@@ -374,7 +400,9 @@ require('ansi-reset', 'reset');
  * @name  strikethrough
  */
 
-require('ansi-strikethrough', 'strikethrough');
+exports.strikethrough = function strikethrough(message) {
+  return wrap(9, 29, message);
+};
 
 /**
  * Wrap a string with ansi codes to underline the text.
@@ -389,7 +417,9 @@ require('ansi-strikethrough', 'strikethrough');
  * @name  underline
  */
 
-require('ansi-underline', 'underline');
+exports.underline = function underline(message) {
+  return wrap(4, 24, message);
+};
 
 /**
  * Wrap a string with ansi codes to create white text.
@@ -404,7 +434,9 @@ require('ansi-underline', 'underline');
  * @name  white
  */
 
-require('ansi-white', 'white');
+exports.white = function white(message) {
+  return wrap(37, 39, message);
+};
 
 /**
  * Wrap a string with ansi codes to create yellow text.
@@ -419,16 +451,6 @@ require('ansi-white', 'white');
  * @name  yellow
  */
 
-require('ansi-yellow', 'yellow');
-
-/**
- * Restore `require`
- */
-
-require = fn;
-
-/**
- * Expose `colors` modules
- */
-
-module.exports = colors;
+exports.yellow = function yellow(message) {
+  return wrap(33, 39, message);
+};
