@@ -27,3 +27,9 @@ console.log('strikethrough:', colors.strikethrough('some string'));
 console.log('underline:', colors.underline('some string'));
 console.log('white:', colors.white('some string'));
 console.log('yellow:', colors.yellow('some string'));
+
+console.log();
+console.log(colors.bold(colors.cyan('[info]')), colors.cyan('This is some information'));
+console.log(colors.bold(colors.yellow('[warning]')), colors.yellow('This is a warning'));
+console.log(colors.bold(colors.red('[ERROR]')), colors.red('Danger! There was an error!'));
+console.log();
