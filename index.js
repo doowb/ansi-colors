@@ -20,8 +20,8 @@ var wrap = require('ansi-wrap');
  * console.log(colors.bgblack('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgblack
  */
@@ -37,8 +37,8 @@ exports.bgblack = function bgblack(message) {
  * console.log(colors.bgblue('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgblue
  */
@@ -54,8 +54,8 @@ exports.bgblue = function bgblue(message) {
  * console.log(colors.bgcyan('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgcyan
  */
@@ -71,8 +71,8 @@ exports.bgcyan = function bgcyan(message) {
  * console.log(colors.bggreen('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bggreen
  */
@@ -88,8 +88,8 @@ exports.bggreen = function bggreen(message) {
  * console.log(colors.bgmagenta('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgmagenta
  */
@@ -105,8 +105,8 @@ exports.bgmagenta = function bgmagenta(message) {
  * console.log(colors.bgred('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgred
  */
@@ -122,8 +122,8 @@ exports.bgred = function bgred(message) {
  * console.log(colors.bgwhite('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgwhite
  */
@@ -139,8 +139,8 @@ exports.bgwhite = function bgwhite(message) {
  * console.log(colors.bgyellow('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bgyellow
  */
@@ -156,8 +156,8 @@ exports.bgyellow = function bgyellow(message) {
  * console.log(colors.black('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  black
  */
@@ -173,8 +173,8 @@ exports.black = function black(message) {
  * console.log(colors.blue('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  blue
  */
@@ -190,8 +190,8 @@ exports.blue = function blue(message) {
  * console.log(colors.bold('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  bold
  */
@@ -207,8 +207,8 @@ exports.bold = function bold(message) {
  * console.log(colors.cyan('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  cyan
  */
@@ -224,8 +224,8 @@ exports.cyan = function cyan(message) {
  * console.log(colors.dim('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  dim
  */
@@ -241,8 +241,8 @@ exports.dim = function dim(message) {
  * console.log(colors.gray('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  gray
  */
@@ -258,8 +258,8 @@ exports.gray = function gray(message) {
  * console.log(colors.green('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  green
  */
@@ -275,8 +275,8 @@ exports.green = function green(message) {
  * console.log(colors.grey('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  grey
  */
@@ -292,8 +292,8 @@ exports.grey = function grey(message) {
  * console.log(colors.hidden('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  hidden
  */
@@ -309,8 +309,8 @@ exports.hidden = function hidden(message) {
  * console.log(colors.inverse('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  inverse
  */
@@ -326,8 +326,8 @@ exports.inverse = function inverse(message) {
  * console.log(colors.italic('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  italic
  */
@@ -343,8 +343,8 @@ exports.italic = function italic(message) {
  * console.log(colors.magenta('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  magenta
  */
@@ -360,8 +360,8 @@ exports.magenta = function magenta(message) {
  * console.log(colors.red('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  red
  */
@@ -377,8 +377,8 @@ exports.red = function red(message) {
  * console.log(colors.reset('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  reset
  */
@@ -394,8 +394,8 @@ exports.reset = function reset(message) {
  * console.log(colors.strikethrough('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  strikethrough
  */
@@ -411,8 +411,8 @@ exports.strikethrough = function strikethrough(message) {
  * console.log(colors.underline('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  underline
  */
@@ -428,8 +428,8 @@ exports.underline = function underline(message) {
  * console.log(colors.white('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  white
  */
@@ -445,8 +445,8 @@ exports.white = function white(message) {
  * console.log(colors.yellow('some string'));
  * ```
  *
- * @param  {String} `str` String to wrap with ansi codes.
- * @return {String} Wrapped string
+ * @param  {string} message String to wrap with ansi codes.
+ * @return {string} Wrapped string
  * @api public
  * @name  yellow
  */
