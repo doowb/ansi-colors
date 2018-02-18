@@ -14,7 +14,8 @@
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "types/index.d.ts"
   ],
   "main": "index.js",
   "types": "./types/index.d.ts",
