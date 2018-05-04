@@ -41,7 +41,7 @@ console.log(c.cyan('This is a cyan string!'));
 console.log(c.yellow('This is a yellow string!'));
 ```
 
-![image](https://user-images.githubusercontent.com/995160/34897845-3150daae-f7be-11e7-9706-38c42461e0ee.png)
+![image](https://user-images.githubusercontent.com/383994/39653848-a38e67da-4fc0-11e8-89ae-98c65ebe9dcf.png)
 
 ## Features
 
@@ -304,8 +304,8 @@ You might also be interested in these projects:
 
 | **Commits** | **Contributor** | 
 | --- | --- |
-| 14 | [doowb](https://github.com/doowb) |
-| 3 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 18 | [doowb](https://github.com/doowb) |
+| 7 | [jonschlinkert](https://github.com/jonschlinkert) |
 | 2 | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |
 
 ### Author
