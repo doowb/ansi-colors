@@ -19,13 +19,14 @@
   ],
   "main": "index.js",
   "engines": {
-    "node": ">=8.6"
+    "node": ">=6"
   },
   "scripts": {
     "test": "mocha"
   },
   "devDependencies": {
     "gulp-format-md": "^1.0.0",
+    "justified": "^1.0.1",
     "mocha": "^3.5.3",
     "text-table": "^0.2.0"
   },
