@@ -18,59 +18,39 @@
     "types/index.d.ts"
   ],
   "main": "index.js",
-  "types": "./types/index.d.ts",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=8.6"
   },
   "scripts": {
-    "test": "mocha && tsc --project types"
-  },
-  "dependencies": {
-    "ansi-wrap": "^0.1.0"
+    "test": "mocha"
   },
   "devDependencies": {
     "gulp-format-md": "^1.0.0",
     "mocha": "^3.5.3",
-    "typescript": "^2.7.1"
+    "text-table": "^0.2.0"
   },
   "keywords": [
-    "ansi-bgblack",
-    "ansi-bgblue",
-    "ansi-bgcyan",
-    "ansi-bggreen",
-    "ansi-bgmagenta",
-    "ansi-bgred",
-    "ansi-bgwhite",
-    "ansi-bgyellow",
-    "ansi-black",
-    "ansi-blue",
-    "ansi-bold",
-    "ansi-cyan",
-    "ansi-dim",
-    "ansi-gray",
-    "ansi-green",
-    "ansi-grey",
-    "ansi-hidden",
-    "ansi-inverse",
-    "ansi-italic",
-    "ansi-magenta",
-    "ansi-red",
-    "ansi-reset",
-    "ansi-strikethrough",
-    "ansi-underline",
-    "ansi-white",
-    "ansi-yellow",
+    "ansi",
     "bgblack",
+    "bgBlack",
     "bgblue",
+    "bgBlue",
     "bgcyan",
+    "bgCyan",
     "bggreen",
+    "bgGreen",
     "bgmagenta",
+    "bgMagenta",
     "bgred",
+    "bgRed",
     "bgwhite",
+    "bgWhite",
     "bgyellow",
+    "bgYellow",
     "black",
     "blue",
     "bold",
+    "colors",
     "cyan",
     "dim",
     "gray",
@@ -87,52 +67,34 @@
     "white",
     "yellow"
   ],
+  "types": "./types/index.d.ts",
   "verb": {
     "toc": false,
     "layout": "default",
     "tasks": [
       "readme"
     ],
+    "data": {
+      "author": {
+        "linkedin": "woodwardbrian",
+        "twitter": "doowb"
+      }
+    },
     "plugins": [
       "gulp-format-md"
     ],
     "lint": {
       "reflinks": true
     },
-    "reflinks": [
-      "verb-readme-generator",
-      "verb"
-    ],
     "related": {
       "list": [
-        "ansi-bgblack",
-        "ansi-bgblue",
-        "ansi-bgcyan",
-        "ansi-bggreen",
-        "ansi-bgmagenta",
-        "ansi-bgred",
-        "ansi-bgwhite",
-        "ansi-bgyellow",
-        "ansi-black",
-        "ansi-blue",
-        "ansi-bold",
-        "ansi-cyan",
-        "ansi-dim",
-        "ansi-gray",
-        "ansi-green",
-        "ansi-grey",
-        "ansi-hidden",
-        "ansi-inverse",
-        "ansi-italic",
-        "ansi-magenta",
-        "ansi-red",
-        "ansi-reset",
-        "ansi-strikethrough",
-        "ansi-underline",
-        "ansi-white",
         "ansi-wrap",
-        "ansi-yellow"
+        "strip-color"
       ]
-    }
+    },
+    "reflinks": [
+      "colors",
+      "supports-color"
+    ]
   }
 }
