@@ -132,4 +132,8 @@ for (const key of Object.keys(styles)) {
 colors.stripColor = colors.strip = colors.unstyle = unstyle;
 colors.styles = styles;
 colors.symbols = symbols;
+colors.ok = (...args) => {
+  return colors.green(symbols.check) + ' ' + util.format(...args);
+};
+
 module.exports = colors;

@@ -1,4 +1,4 @@
 
 const log = require('..');
 
-console.log(log.ok, 'done!');
+console.log(log.ok('done!'));
