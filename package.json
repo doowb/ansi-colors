@@ -22,7 +22,7 @@
     "node": ">=8.6"
   },
   "scripts": {
-    "test": "mocha && tsc --project types"
+    "test": "mocha"
   },
   "devDependencies": {
     "gulp-format-md": "^1.0.0",
