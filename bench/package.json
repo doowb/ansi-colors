@@ -1,0 +1,19 @@
+{
+  "name": "benchmarks",
+  "private": true,
+  "devDependencies": {
+    "ansi": "^0.3.1",
+    "benchmark": "^2.1.4",
+    "chalk": "^2.4.0",
+    "clorox": "^1.0.3"
+  },
+  "lintDeps": {
+    "devDependencies": {
+      "files": {
+        "patterns": [
+          "*.js"
+        ]
+      }
+    }
+  }
+}

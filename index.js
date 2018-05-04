@@ -1,456 +1,135 @@
-/*!
- * ansi-colors <https://github.com/doowb/ansi-colors>
- *
- * Copyright (c) 2015-2017, Brian Woodward.
- * Released under the MIT License.
- */
-
 'use strict';
 
-/**
- * Module dependencies
- */
-
-var wrap = require('ansi-wrap');
-
-/**
- * Wrap a string with ansi codes to create a black background.
- *
- * ```js
- * console.log(colors.bgblack('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgblack
- */
-
-exports.bgblack = function bgblack(message) {
-  return wrap(40, 49, message);
+const util = require('util');
+const ansiRegex = /\u001b\[[0-9]+m/ig;
+const colors = { enabled: true, visible: true, ansiRegex };
+const symbols = process.platform === 'win32' ? {
+  check: '√',
+  cross: '×',
+  info: 'i',
+  line: '─',
+  pointer: '>',
+  pointerSmall: '»',
+  question: '?',
+  warning: '‼'
+} : {
+  check: '✔',
+  cross: '✖',
+  info: 'ℹ',
+  line: '─',
+  pointer: '❯',
+  pointerSmall: '›',
+  question: '?',
+  warning: '⚠'
 };
 
-/**
- * Wrap a string with ansi codes to create a blue background.
- *
- * ```js
- * console.log(colors.bgblue('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgblue
- */
+const styles = {
+  // modifiers
+  reset: [0, 0],
+  bold: [1, 22],
+  dim: [2, 22],
+  italic: [3, 23],
+  underline: [4, 24],
+  inverse: [7, 27],
+  hidden: [8, 28],
+  strikethrough: [9, 29],
 
-exports.bgblue = function bgblue(message) {
-  return wrap(44, 49, message);
+  // colors
+  black: [30, 39],
+  red: [31, 39],
+  green: [32, 39],
+  yellow: [33, 39],
+  blue: [34, 39],
+  magenta: [35, 39],
+  cyan: [36, 39],
+  white: [37, 39],
+  gray: [90, 39],
+  grey: [90, 39],
+
+  // bright colors
+  blackBright: [90, 39],
+  redBright: [91, 39],
+  greenBright: [92, 39],
+  yellowBright: [93, 39],
+  blueBright: [94, 39],
+  magentaBright: [95, 39],
+  cyanBright: [96, 39],
+  whiteBright: [97, 39],
+
+  // background colors
+  bgBlack: [40, 49],
+  bgRed: [41, 49],
+  bgGreen: [42, 49],
+  bgYellow: [43, 49],
+  bgBlue: [44, 49],
+  bgMagenta: [45, 49],
+  bgCyan: [46, 49],
+  bgWhite: [47, 49],
+
+  // bright background colors
+  bgBlackBright: [100, 49],
+  bgRedBright: [101, 49],
+  bgGreenBright: [102, 49],
+  bgYellowBright: [103, 49],
+  bgBlueBright: [104, 49],
+  bgMagentaBright: [105, 49],
+  bgCyanBright: [106, 49],
+  bgWhiteBright: [107, 49]
 };
 
-/**
- * Wrap a string with ansi codes to create a cyan background.
- *
- * ```js
- * console.log(colors.bgcyan('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgcyan
- */
-
-exports.bgcyan = function bgcyan(message) {
-  return wrap(46, 49, message);
+const isString = val => val && typeof val === 'string';
+const unstyle = val => isString(val) ? val.replace(ansiRegex, '') : val;
+const hasOpen = (input, open) => input.slice(0, open.length) === open;
+const hasClose = (input, close) => input.slice(-close.length) === close;
+const color = (str, style, hasNewline) => {
+  const { open, close } = style;
+  if (!(hasOpen(str, open) && hasClose(str, close))) {
+    str = style.open + str.replace(style.closeRe, style.open) + style.close;
+  }
+  if (hasNewline) {
+    return str.replace(/(\r?\n)/g, `${style.close}$1${style.open}`);
+  }
+  return str;
 };
 
-/**
- * Wrap a string with ansi codes to create a green background.
- *
- * ```js
- * console.log(colors.bggreen('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bggreen
- */
+function wrap(...args) {
+  if (colors.visible === false) return '';
 
-exports.bggreen = function bggreen(message) {
-  return wrap(42, 49, message);
-};
+  let str = util.format(...args);
+  if (colors.enabled === false) return str;
+  if (str.trim() === '') return str;
 
-/**
- * Wrap a string with ansi codes to create a magenta background.
- *
- * ```js
- * console.log(colors.bgmagenta('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgmagenta
- */
+  const newline = str.includes('\n');
+  for (const key of this.stack) {
+    str = color(str, styles[key], newline);
+  }
+  return str;
+}
 
-exports.bgmagenta = function bgmagenta(message) {
-  return wrap(45, 49, message);
-};
+function style(stack) {
+  const create = (...args) => wrap.call(create, ...args);
+  create.stack = stack;
+  Reflect.setPrototypeOf(create, colors);
+  return create;
+}
 
-/**
- * Wrap a string with ansi codes to create a red background.
- *
- * ```js
- * console.log(colors.bgred('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgred
- */
+function decorate(style) {
+  style.open = `\u001b[${style[0]}m`;
+  style.close = `\u001b[${style[1]}m`;
+  style.closeRe = new RegExp(`\\u001b\\[${style[1]}m`, 'g');
+  return style;
+}
 
-exports.bgred = function bgred(message) {
-  return wrap(41, 49, message);
-};
+for (const key of Object.keys(styles)) {
+  decorate(styles[key]);
+  Reflect.defineProperty(colors, key, {
+    get() {
+      return style(this.stack ? this.stack.concat(key) : [key]);
+    }
+  });
+}
 
-/**
- * Wrap a string with ansi codes to create a white background.
- *
- * ```js
- * console.log(colors.bgwhite('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgwhite
- */
-
-exports.bgwhite = function bgwhite(message) {
-  return wrap(47, 49, message);
-};
-
-/**
- * Wrap a string with ansi codes to create a yellow background.
- *
- * ```js
- * console.log(colors.bgyellow('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bgyellow
- */
-
-exports.bgyellow = function bgyellow(message) {
-  return wrap(43, 49, message);
-};
-
-/**
- * Wrap a string with ansi codes to create black text.
- *
- * ```js
- * console.log(colors.black('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  black
- */
-
-exports.black = function black(message) {
-  return wrap(30, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create blue text.
- *
- * ```js
- * console.log(colors.blue('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  blue
- */
-
-exports.blue = function blue(message) {
-  return wrap(34, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create bold text.
- *
- * ```js
- * console.log(colors.bold('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  bold
- */
-
-exports.bold = function bold(message) {
-  return wrap(1, 22, message);
-};
-
-/**
- * Wrap a string with ansi codes to create cyan text.
- *
- * ```js
- * console.log(colors.cyan('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  cyan
- */
-
-exports.cyan = function cyan(message) {
-  return wrap(36, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create dim text.
- *
- * ```js
- * console.log(colors.dim('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  dim
- */
-
-exports.dim = function dim(message) {
-  return wrap(2, 22, message);
-};
-
-/**
- * Wrap a string with ansi codes to create gray text.
- *
- * ```js
- * console.log(colors.gray('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  gray
- */
-
-exports.gray = function gray(message) {
-  return wrap(90, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create green text.
- *
- * ```js
- * console.log(colors.green('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  green
- */
-
-exports.green = function green(message) {
-  return wrap(32, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create grey text.
- *
- * ```js
- * console.log(colors.grey('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  grey
- */
-
-exports.grey = function grey(message) {
-  return wrap(90, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create hidden text.
- *
- * ```js
- * console.log(colors.hidden('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  hidden
- */
-
-exports.hidden = function hidden(message) {
-  return wrap(8, 28, message);
-};
-
-/**
- * Wrap a string with ansi codes to create inverse text.
- *
- * ```js
- * console.log(colors.inverse('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  inverse
- */
-
-exports.inverse = function inverse(message) {
-  return wrap(7, 27, message);
-};
-
-/**
- * Wrap a string with ansi codes to create italic text.
- *
- * ```js
- * console.log(colors.italic('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  italic
- */
-
-exports.italic = function italic(message) {
-  return wrap(3, 23, message);
-};
-
-/**
- * Wrap a string with ansi codes to create magenta text.
- *
- * ```js
- * console.log(colors.magenta('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  magenta
- */
-
-exports.magenta = function magenta(message) {
-  return wrap(35, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create red text.
- *
- * ```js
- * console.log(colors.red('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  red
- */
-
-exports.red = function red(message) {
-  return wrap(31, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to reset ansi colors currently on the string.
- *
- * ```js
- * console.log(colors.reset('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  reset
- */
-
-exports.reset = function reset(message) {
-  return wrap(0, 0, message);
-};
-
-/**
- * Wrap a string with ansi codes to add a strikethrough to the text.
- *
- * ```js
- * console.log(colors.strikethrough('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  strikethrough
- */
-
-exports.strikethrough = function strikethrough(message) {
-  return wrap(9, 29, message);
-};
-
-/**
- * Wrap a string with ansi codes to underline the text.
- *
- * ```js
- * console.log(colors.underline('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  underline
- */
-
-exports.underline = function underline(message) {
-  return wrap(4, 24, message);
-};
-
-/**
- * Wrap a string with ansi codes to create white text.
- *
- * ```js
- * console.log(colors.white('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  white
- */
-
-exports.white = function white(message) {
-  return wrap(37, 39, message);
-};
-
-/**
- * Wrap a string with ansi codes to create yellow text.
- *
- * ```js
- * console.log(colors.yellow('some string'));
- * ```
- *
- * @param  {string} message String to wrap with ansi codes.
- * @return {string} Wrapped string
- * @api public
- * @name  yellow
- */
-
-exports.yellow = function yellow(message) {
-  return wrap(33, 39, message);
-};
+colors.stripColor = colors.strip = colors.unstyle = unstyle;
+colors.styles = styles;
+colors.symbols = symbols;
+module.exports = colors;
