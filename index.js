@@ -3,25 +3,6 @@
 const util = require('util');
 const ansiRegex = /\u001b\[[0-9]+m/ig;
 const colors = { enabled: true, visible: true, ansiRegex };
-const symbols = process.platform === 'win32' ? {
-  check: '√',
-  cross: '×',
-  info: 'i',
-  line: '─',
-  pointer: '>',
-  pointerSmall: '»',
-  question: '?',
-  warning: '‼'
-} : {
-  check: '✔',
-  cross: '✖',
-  info: 'ℹ',
-  line: '─',
-  pointer: '❯',
-  pointerSmall: '›',
-  question: '?',
-  warning: '⚠'
-};
 
 const styles = {
   // modifiers
@@ -131,9 +112,5 @@ for (const key of Object.keys(styles)) {
 
 colors.stripColor = colors.strip = colors.unstyle = unstyle;
 colors.styles = styles;
-colors.symbols = symbols;
-colors.ok = (...args) => {
-  return colors.green(symbols.check) + ' ' + util.format(...args);
-};
 
 module.exports = colors;
