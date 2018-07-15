@@ -1,6 +1,6 @@
 'use strict';
 
-const util = require('util');
+const { format } = require('util');
 const ansiRegex = /\u001b\[[0-9]+m/ig;
 const colors = { enabled: true, visible: true, ansiRegex };
 const symbols = process.platform === 'win32' ? {
@@ -77,31 +77,21 @@ const styles = {
   bgWhiteBright: [107, 49]
 };
 
-const hasOpen = (input, open) => input.slice(0, open.length) === open;
-const hasClose = (input, close) => input.slice(-close.length) === close;
-const color = (str, style, hasNewline) => {
-  const { open, close } = style;
-  if (!(hasOpen(str, open) && hasClose(str, close))) {
-    str = style.open + str.replace(style.closeRe, style.open) + style.close;
-  }
-  if (hasNewline) {
-    return str.replace(/(\r?\n)/g, `${style.close}$1${style.open}`);
-  }
-  return str;
-};
+function wrap() {
+  if (!colors.visible) return '';
+  let out = format.apply(null, arguments);
+  if (!colors.enabled || out.trim().length === 0) return out;
 
-function wrap(...args) {
-  if (colors.visible === false) return '';
+  let i=0, tmp, arr=this.stack;
+  let isMulti = !!~out.indexOf('\n');
 
-  let str = util.format(...args);
-  if (colors.enabled === false) return str;
-  if (str.trim() === '') return str;
-
-  const newline = str.includes('\n');
-  for (const key of this.stack) {
-    str = color(str, styles[key], newline);
+  for (; i < arr.length; i++) {
+    tmp = styles[arr[i]]; // { x1, x2, rgx }
+    out = tmp.open + out.replace(tmp.closeRe, tmp.open) + tmp.close;
+    isMulti && (out = out.replace(/(\r?\n)/g, `${tmp.close}$1${tmp.open}`));
   }
-  return str;
+
+  return out;
 }
 
 function style(stack) {
