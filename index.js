@@ -106,10 +106,9 @@ function decorate(style) {
   style.open = `\u001b[${style[0]}m`;
   style.close = `\u001b[${style[1]}m`;
   style.closeRe = new RegExp(`\\u001b\\[${style[1]}m`, 'g');
-  return style;
 }
 
-for (const key of Object.keys(styles)) {
+for (let key in styles) {
   decorate(styles[key]);
   Reflect.defineProperty(colors, key, {
     get() {
