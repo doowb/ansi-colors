@@ -77,8 +77,6 @@ const styles = {
   bgWhiteBright: [107, 49]
 };
 
-const isString = val => val && typeof val === 'string';
-const unstyle = val => isString(val) ? val.replace(ansiRegex, '') : val;
 const hasOpen = (input, open) => input.slice(0, open.length) === open;
 const hasClose = (input, close) => input.slice(-close.length) === close;
 const color = (str, style, hasNewline) => {
@@ -129,7 +127,10 @@ for (const key of Object.keys(styles)) {
   });
 }
 
-colors.stripColor = colors.strip = colors.unstyle = unstyle;
+colors.stripColor = colors.strip = colors.unstyle = str => {
+  return str && typeof str === 'string' ? str.replace(ansiRegex, '') : str;
+}
+
 colors.styles = styles;
 colors.symbols = symbols;
 colors.ok = (...args) => {
