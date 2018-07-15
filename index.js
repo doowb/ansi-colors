@@ -105,10 +105,11 @@ function wrap(...args) {
 }
 
 function style(stack) {
-  const create = (...args) => wrap.call(create, ...args);
-  create.stack = stack;
-  Reflect.setPrototypeOf(create, colors);
-  return create;
+  let ctx = {};
+  let fn = wrap.bind(ctx);
+  ctx.stack = fn.stack = stack;
+  Reflect.setPrototypeOf(fn, colors);
+  return fn;
 }
 
 function decorate(style) {
