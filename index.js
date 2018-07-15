@@ -122,7 +122,7 @@ for (const key of Object.keys(styles)) {
   decorate(styles[key]);
   Reflect.defineProperty(colors, key, {
     get() {
-      return style(this.stack ? this.stack.concat(key) : [key]);
+      return this.stack !== void 0 ? (this.stack.push(key),this) : style([key]);
     }
   });
 }
