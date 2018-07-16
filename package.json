@@ -6,7 +6,10 @@
   "author": "Brian Woodward (https://github.com/doowb)",
   "contributors": [
     "Brian Woodward (https://twitter.com/doowb)",
-    "Jon Schlinkert (http://twitter.com/jonschlinkert)"
+    "Jason Schilling (https://sourecode.de)",
+    "Jon Schlinkert (http://twitter.com/jonschlinkert)",
+    "Jordan (https://github.com/Silic0nS0ldier)",
+    "Luke Edwards (https://lukeed.com)"
   ],
   "repository": "doowb/ansi-colors",
   "bugs": {
