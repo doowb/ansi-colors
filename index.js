@@ -82,13 +82,13 @@ function wrap() {
   let out = format.apply(null, arguments);
   if (!colors.enabled || out.trim().length === 0) return out;
 
-  let i=0, tmp, arr=this.stack;
-  let isMulti = !!~out.indexOf('\n');
-
-  for (; i < arr.length; i++) {
-    tmp = styles[arr[i]]; // { x1, x2, rgx }
+  let tmp, isMulti = out.includes('\n');
+  for (let i = 0; i < this.stack.length; i++) {
+    tmp = styles[this.stack[i]]; // { x1, x2, rgx }
     out = tmp.open + out.replace(tmp.closeRe, tmp.open) + tmp.close;
-    isMulti && (out = out.replace(/(\r?\n)/g, `${tmp.close}$1${tmp.open}`));
+    if (isMulti) {
+      out = out.replace(/(\r?\n)/g, `${tmp.close}$1${tmp.open}`);
+    }
   }
 
   return out;
@@ -112,7 +112,11 @@ for (let key in styles) {
   decorate(styles[key]);
   Reflect.defineProperty(colors, key, {
     get() {
-      return this.stack !== void 0 ? (this.stack.push(key),this) : style([key]);
+      if (this.stack === void 0) {
+        return style([key]);
+      }
+      this.stack.push(key);
+      return this;
     }
   });
 }
