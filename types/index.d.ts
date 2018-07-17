@@ -1,4 +1,4 @@
-// Imported from from DefinitelyTyped project.
+// Imported from DefinitelyTyped project.
 // TypeScript definitions for ansi-colors
 // Definitions by: Rogier Schouten <https://github.com/rogierschouten>
 // Integrated by: Jordan Mele <https://github.com/Silic0nS0ldier>
