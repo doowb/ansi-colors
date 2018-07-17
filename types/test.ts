@@ -1,4 +1,4 @@
-// Imported from from DefinitelyTyped project.
+// Imported from DefinitelyTyped project.
 
 import * as colors from '../';
 
