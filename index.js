@@ -1,6 +1,6 @@
 'use strict';
 
-const { format } = require('util');
+const util = require('util');
 const ansiRegex = /\u001b\[[0-9]+m/ig;
 const colors = { enabled: true, visible: true, ansiRegex };
 const symbols = process.platform === 'win32' ? {
@@ -77,54 +77,59 @@ const styles = {
   bgWhiteBright: [107, 49]
 };
 
-function wrap() {
-  if (!colors.visible) return '';
-  let out = format.apply(null, arguments);
-  if (!colors.enabled || out.trim().length === 0) return out;
-
-  let tmp, isMulti = out.includes('\n');
-  for (let i = 0; i < this.stack.length; i++) {
-    tmp = styles[this.stack[i]]; // { x1, x2, rgx }
-    out = tmp.open + out.replace(tmp.closeRe, tmp.open) + tmp.close;
-    if (isMulti) {
-      out = out.replace(/(\r?\n)/g, `${tmp.close}$1${tmp.open}`);
-    }
+const isString = val => val && typeof val === 'string';
+const unstyle = val => isString(val) ? val.replace(ansiRegex, '') : val;
+const hasOpen = (input, open) => input.slice(0, open.length) === open;
+const hasClose = (input, close) => input.slice(-close.length) === close;
+const color = (str, style, hasNewline) => {
+  const { open, close } = style;
+  if (!(hasOpen(str, open) && hasClose(str, close))) {
+    str = style.open + str.replace(style.closeRe, style.open) + style.close;
   }
+  if (hasNewline) {
+    return str.replace(/(\r?\n)/g, `${style.close}$1${style.open}`);
+  }
+  return str;
+};
 
-  return out;
+function wrap(...args) {
+  if (colors.visible === false) return '';
+
+  let str = util.format(...args);
+  if (colors.enabled === false) return str;
+  if (str.trim() === '') return str;
+
+  const newline = str.includes('\n');
+  for (const key of this.stack) {
+    str = color(str, styles[key], newline);
+  }
+  return str;
 }
 
 function style(stack) {
-  let ctx = {};
-  let fn = wrap.bind(ctx);
-  ctx.stack = fn.stack = stack;
-  Reflect.setPrototypeOf(fn, colors);
-  return fn;
+  const create = (...args) => wrap.call(create, ...args);
+  create.stack = stack;
+  Reflect.setPrototypeOf(create, colors);
+  return create;
 }
 
 function decorate(style) {
   style.open = `\u001b[${style[0]}m`;
   style.close = `\u001b[${style[1]}m`;
   style.closeRe = new RegExp(`\\u001b\\[${style[1]}m`, 'g');
+  return style;
 }
 
-for (let key in styles) {
+for (const key of Object.keys(styles)) {
   decorate(styles[key]);
   Reflect.defineProperty(colors, key, {
     get() {
-      if (this.stack === void 0) {
-        return style([key]);
-      }
-      this.stack.push(key);
-      return this;
+      return style(this.stack ? this.stack.concat(key) : [key]);
     }
   });
 }
 
-colors.stripColor = colors.strip = colors.unstyle = str => {
-  return str && typeof str === 'string' ? str.replace(ansiRegex, '') : str;
-}
-
+colors.stripColor = colors.strip = colors.unstyle = unstyle;
 colors.styles = styles;
 colors.symbols = symbols;
 colors.ok = (...args) => {
