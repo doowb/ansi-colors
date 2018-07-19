@@ -108,6 +108,12 @@ describe('colors', function() {
   it('should wrap a string with ansi-yellow styling:', function() {
     assert.equal(c.yellow('string'), '\u001b[33mstring\u001b[39m');
   });
+
+  it.only('should wrap strings with the correct styling:', function() {
+    const { cyan } = c;
+    assert.equal(cyan.underline('string'), '\u001b[4m\u001b[36mstring\u001b[39m\u001b[24m');
+    assert.equal(cyan('string'), '\u001b[36mstring\u001b[39m');
+  });
 });
 
 describe('unstyle', function() {
