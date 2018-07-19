@@ -91,7 +91,6 @@ function wrap() {
     }
   }
 
-  this.stack = [this.stack[0]];
   return out;
 }
 
