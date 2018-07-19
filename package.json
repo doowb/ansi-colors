@@ -1,7 +1,7 @@
 {
   "name": "ansi-colors",
   "description": "Easily add ANSI colors to your text and symbols in the terminal.",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "homepage": "https://github.com/doowb/ansi-colors",
   "author": "Brian Woodward (https://github.com/doowb)",
   "contributors": [
