@@ -27,11 +27,9 @@ for (const key of Object.keys(styles)) {
 
   arr[arr.length - 1].push(colors[key](prop));
 
-  if (idx >= 3) {
+  if (idx++ >= 3) {
     arr.push([]);
     idx = 0;
-  } else {
-    idx++;
   }
 }
 

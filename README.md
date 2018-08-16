@@ -1,6 +1,6 @@
 # ansi-colors [![NPM version](https://img.shields.io/npm/v/ansi-colors.svg?style=flat)](https://www.npmjs.com/package/ansi-colors) [![NPM monthly downloads](https://img.shields.io/npm/dm/ansi-colors.svg?style=flat)](https://npmjs.org/package/ansi-colors) [![NPM total downloads](https://img.shields.io/npm/dt/ansi-colors.svg?style=flat)](https://npmjs.org/package/ansi-colors) [![Linux Build Status](https://img.shields.io/travis/doowb/ansi-colors.svg?style=flat&label=Travis)](https://travis-ci.org/doowb/ansi-colors) [![Windows Build Status](https://img.shields.io/appveyor/ci/doowb/ansi-colors.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/doowb/ansi-colors)
 
-> Easily add ANSI colors to your text and symbols in the terminal.
+> Easily add ANSI colors to your text and symbols in the terminal. A faster drop-in replacement for chalk, kleur and turbocolor (without the dependencies and rendering bugs).
 
 Please consider following this project's author, [Brian Woodward](https://github.com/doowb), and consider starring the project to show your :heart: and support.
 
@@ -12,23 +12,21 @@ Install with [npm](https://www.npmjs.com/):
 $ npm install --save ansi-colors
 ```
 
-ansi-colors is a Node.js library for adding colors to text in the terminal. A more performant drop-in replacement for chalk, with no dependencies.
-
 ![image](https://user-images.githubusercontent.com/383994/39635445-8a98a3a6-4f8b-11e8-89c1-068c45d4fff8.png)
 
 ## Why use this?
 
-* Minimal - No dependencies! ([chalk](https://github.com/chalk/chalk) has 7 dependencies in its tree)
-* Safe - Does not modify the `String.prototype`
-* [Fast](#benchmarks) - Loads 5x faster and renders styles 10x faster than [chalk](https://github.com/chalk/chalk).
-* [Conditional color support](#conditional-color-support)
-* Supports [nested colors](#nested-colors)
-* Supports [chained colors](#chained-colors)!
-* Includes commonly used [symbols](#symbols)
-* Exposes a method for [stripping ANSI codes](#strip-ansi-codes)
-* [printf-like](#printf-formatting) formatting
+ansi-colors is _the fastest Node.js library for terminal styling_. A more performant drop-in replacement for chalk, with no dependencies.
 
-See a [comparison to other libraries](#comparison)
+* _Blazing fast_ - The fastest terminal styling library in node.js (See [Beware of false claims!](#beware-of-false-claims))!
+
+* _Drop-in replacement_ for [chalk](https://github.com/chalk/chalk), [turbocolor](https://github.com/doowb/turbocolor), [kleur](https://github.com/lukeed/kleur), etc.
+* _No dependencies_ (Chalk has 7 dependencies in its tree!)
+
+* _Safe_ - Does not modify the `String.prototype` like [colors](https://github.com/Marak/colors.js).
+* Supports [nested colors](#nested-colors)
+* Supports [chained colors](#chained-colors)
+* [Toggle color support](#toggle-color-support) on or off.
 
 ## Usage
 
@@ -43,17 +41,7 @@ console.log(c.yellow('This is a yellow string!'));
 
 ![image](https://user-images.githubusercontent.com/383994/39653848-a38e67da-4fc0-11e8-89ae-98c65ebe9dcf.png)
 
-## Features
-
-Colors take multiple arguments.
-
-```js
-console.log(c.red('Some', 'red', 'text', 'to', 'display'));
-```
-
-### Chained styles
-
-Supports chained styles.
+### Chained colors
 
 ```js
 console.log(c.bold.red('this is a bold red message'));
@@ -63,9 +51,7 @@ console.log(c.green.bold.underline('this is a bold green underlined message'));
 
 ![image](https://user-images.githubusercontent.com/383994/39635780-7617246a-4f8c-11e8-89e9-05216cc54e38.png)
 
-### Nested styles
-
-Supports nested styles.
+### Nested colors
 
 ```js
 // using template literals
@@ -77,7 +63,7 @@ console.log(c.yellow('foo', c.red.bold('red'), 'bar', c.cyan('cyan'), 'baz'));
 
 ![image](https://user-images.githubusercontent.com/383994/39635817-8ed93d44-4f8c-11e8-8afd-8c3ea35f5fbe.png)
 
-### Conditional color support
+### Toggle color support
 
 Easily enable/disable colors.
 
@@ -93,27 +79,9 @@ c.enabled = require('color-support').stdout;
 console.log(c.red('I will only be colored red if the terminal supports colors'));
 ```
 
-## printf-like formatting
-
-Uses node's built-in [util.format()](https://nodejs.org/api/util.html#util_util_format_format_args) to achieve printf-like formatting. The first argument is a string containing zero or more placeholder tokens. Each placeholder token is replaced with the converted value from the corresponding argument.
-
-```js
-console.log(c.bold.red('%s:%s', 'foo', 'bar', 'baz'));
-```
-
-![image](https://user-images.githubusercontent.com/383994/39637118-1a12e682-4f90-11e8-8d22-246fee4abe40.png)
-
-Even works with nested colors!
-
-```js
-console.log(c.bold('%s:%s:%s', 'foo', c.red('bar'), 'baz'));
-```
-
-![image](https://user-images.githubusercontent.com/383994/39637327-9fc9081a-4f90-11e8-9995-42c43925fc2f.png)
-
 ## Strip ANSI codes
 
-Use the `.unstyle` method to manually strip ANSI codes from a string.
+Use the `.unstyle` method to strip ANSI codes from a string.
 
 ```js
 console.log(c.unstyle(c.blue.bold('foo bar baz')));
@@ -124,164 +92,140 @@ console.log(c.unstyle(c.blue.bold('foo bar baz')));
 
 **Note** that bright and bright-background colors are not always supported.
 
-### Colors
+| Colors | Background Colors | Bright Colors | Bright Background Colors | 
+| --- | --- | --- | --- |
+| black | bgBlack | blackBright | bgBlackBright |
+| red | bgRed | redBright | bgRedBright |
+| green | bgGreen | greenBright | bgGreenBright |
+| yellow | bgYellow | yellowBright | bgYellowBright |
+| blue | bgBlue | blueBright | bgBlueBright |
+| magenta | bgMagenta | magentaBright | bgMagentaBright |
+| cyan | bgCyan | cyanBright | bgCyanBright |
+| white | bgWhite | whiteBright | bgWhiteBright |
+| gray |  |  |  |
+| grey |  |  |  |
 
-* `black`
-* `blue`
-* `cyan`
-* `gray` (U.S.) and `grey` (everyone else)
-* `green`
-* `magenta`
-* `red`
-* `white`
-* `yellow`
+_(`gray` is the U.S. spelling, `grey` is more commonly used in the Canada and U.K.)_
 
-### Bright colors
+### Style modifiers
 
-* `blueBright`
-* `cyanBright`
-* `greenBright`
-* `magentaBright`
-* `redBright`
-* `whiteBright`
-* `yellowBright`
+* dim
+* **bold**
 
-### Background colors
+* hidden
+* _italic_
 
-* `bgBlack`
-* `bgBlue`
-* `bgCyan`
-* `bgGreen`
-* `bgMagenta`
-* `bgRed`
-* `bgWhite`
-* `bgYellow`
+* underline
+* inverse
+* ~~strikethrough~~
 
-**Bright background colors**
+* reset
 
-* `bgBlackBright`
-* `bgBlueBright`
-* `bgCyanBright`
-* `bgGreenBright`
-* `bgMagentaBright`
-* `bgRedBright`
-* `bgWhiteBright`
-* `bgYellowBright`
-
-### Modifiers
-
-* `bold`
-* `dim`
-* `hidden`
-* `inverse`
-* `italic` _(Not widely supported)_
-
-* `reset`
-* `strikethrough` _(Not widely supported)_
-
-* `underline`
-
-## Symbols
-
-A handful of common useful symbols are available on the `c.symbols` property.
-
-```js
-console.log(c.symbols);
-```
-
-### Available symbols
-
-**Windows**
-
-* check:  `√`
-* cross:  `×`
-* ellipsis: `'...`
-* info:  `i`
-* line:  `─`
-* pointer: `'>`
-* pointerSmall:  `»`
-* question: `?`
-* questionSmall:  `﹖`
-* warning:  `‼`
-
-**Other platforms**
-
-* check: `✔`
-* cross: `✖`
-* ellipsis: `…`
-* info: `ℹ`
-* line: `─`
-* pointer: `❯`
-* pointerSmall: `›`
-* question: `?`
-* questionSmall: `﹖`
-* warning: `⚠`
-
-## Benchmarks
+## Performance
 
 MacBook Pro, Intel Core i7, 2.3 GHz, 16 GB.
 
+**Libraries tested**
+
+* ansi-colors v3.0.0
+* chalk v2.4.1
+* turbocolor v2.4.5
+* kleur v2.0.1
+
+### Beware of false claims!
+
+You might have seen claims from [kleur](https://github.com/lukeed/kleur) or [turbocolor](https://github.com/jorgebucaran/turbocolor) that they are "faster than ansi-colors". Both libraries are unofficial forks of ansi-colors, and in an attempt to appear faster and differentiate from ansi-colors, _both libraries removed crucial code that was necessary for resetting chained colors_.
+
+To illustrate the bug, simply do the following with `kleur` (as of v2.0.1):
+
+```js
+const kleur = require('kleur');
+const red = kleur.bold.underline.red;
+console.log(kleur.bold('I should be bold and white'));
+
+const blue = kleur.underline.blue;
+console.log(kleur.underline('I should be underlined and white'));
+```
+
+Same with `turbocolor` (as of v2.4.5):
+
+```js
+const turbocolor = require('turbocolor');
+const red = turbocolor.bold.underline.red;
+console.log(turbocolor.bold('I should be bold and white'));
+
+const blue = turbocolor.underline.blue;
+console.log(turbocolor.underline('I should be underlined and white'));
+```
+
+Both libraries render the following:
+
+![image](https://user-images.githubusercontent.com/383994/44202955-7ee62100-a11b-11e8-8ee6-652dbde52911.png)
+
+**Other pitfalls**
+
+Beyond the aforementioned rendering bug, neither kleur nor turbocolor can be used as a drop-in replacement for chalk:
+
+* both libraries fail half of the ansi-colors unit tests (chalk passes them all)
+* neither library supports bright colors (chalk and ansi-colors do)
+* neither library supports bright-background colors (chalk and ansi-colors do)
+* turbocolor swaps bright-background colors for background colors. (surprise! turbocolor gives you unexpected colors in the terminal!)
+
 ### Load time
 
-Time it takes to load the module the first time:
+Time it takes to load the first time `require()` is called:
 
-```
-chalk: 11.795ms
-clorox: 1.019ms
-ansi-colors: 0.867ms
-```
+* ansi-colors - `0.794ms`
+* chalk - `13.158ms`
+* kleur - `1.699ms`
+* turbocolor - `5.352ms`
 
-### Performance
+### Benchmarks
+
+_(Note that both `kleur` (as of v2.0.1) and `turbocolor` (as of v2.4.5) have a [rendering bug](#beware-of-false-claims) that creates the illusion of appearing faster with stacked colors.)_
 
 ```
 # All Colors
-  ansi-colors x 104,559 ops/sec ±0.80% (91 runs sampled)
-  chalk x 8,869 ops/sec ±2.09% (82 runs sampled)
-  clorox x 1,315 ops/sec ±2.19% (76 runs sampled)
+  ansi-colors x 370,403 ops/sec ±2.29% (88 runs sampled))
+  kleur x 203,945 ops/sec ±0.60% (92 runs sampled)
+  turbocolor x 365,739 ops/sec ±1.15% (88 runs sampled)
+  chalk x 9,472 ops/sec ±2.28% (81 runs sampled))
 
-# Stacked colors
-  ansi-colors x 36,208 ops/sec ±0.65% (88 runs sampled)
-  chalk x 1,789 ops/sec ±1.77% (80 runs sampled)
-  clorox x 528 ops/sec ±2.00% (78 runs sampled)
+# Chained colors
+  ansi-colors x 21,671 ops/sec ±0.71% (89 runs sampled)
+  kleur x 44,641 ops/sec ±0.87% (88 runs sampled)
+  turbocolor x 53,270 ops/sec ±1.45% (87 runs sampled)
+  chalk x 1,906 ops/sec ±2.11% (83 runs sampled)
 
 # Nested colors
-  ansi-colors x 42,828 ops/sec ±0.36% (90 runs sampled)
-  chalk x 4,082 ops/sec ±1.93% (83 runs sampled)
-  clorox x 628 ops/sec ±2.10% (60 runs sampled)
+  ansi-colors x 206,363 ops/sec ±2.03% (93 runs sampled)
+  kleur x 75,443 ops/sec ±0.90% (92 runs sampled)
+  turbocolor x 85,856 ops/sec ±0.24% (96 runs sampled)
+  chalk x 4,029 ops/sec ±1.91% (82 runs sampled)
 ```
-
-## Comparison
-
-| **Feature** | **ansi-colors** | **chalk** | **clorox** | **colors** |
-| --- | --- | --- | --- | --- |
-| Nested colors | yes | yes | no | yes |
-| Chained colors | yes | yes | You must call `.toString()` on result | yes |
-| Toggle color support | yes | yes | no | yes |
-| printf-like formatting | yes | no | no | no |
-| Includes symbols | yes | no | no | no |
 
 ## About
 
-### Related projects
-
-* [ansi-wrap](https://www.npmjs.com/package/ansi-wrap): Create ansi colors by passing the open and close codes. | [homepage](https://github.com/jonschlinkert/ansi-wrap "Create ansi colors by passing the open and close codes.")
-* [strip-color](https://www.npmjs.com/package/strip-color): Strip ANSI color codes from a string. No dependencies. | [homepage](https://github.com/jonschlinkert/strip-color "Strip ANSI color codes from a string. No dependencies.")
-
-### Contributing
+<details>
+<summary><strong>Contributing</strong></summary>
 
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
 
-### Contributors
+</details>
 
-| **Commits** | **Contributor** |  
-| --- | --- |  
-| 21 | [doowb](https://github.com/doowb) |  
-| 10 | [jonschlinkert](https://github.com/jonschlinkert) |  
-| 6  | [lukeed](https://github.com/lukeed) |  
-| 2  | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |  
-| 1  | [chapterjason](https://github.com/chapterjason) |  
+<details>
+<summary><strong>Running Tests</strong></summary>
 
-### Building docs
+Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
+
+```sh
+$ npm install && npm test
+```
+
+</details>
+
+<details>
+<summary><strong>Building docs</strong></summary>
 
 _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
 
@@ -291,20 +235,33 @@ To generate the readme, run the following command:
 $ npm install -g verbose/verb#dev verb-generate-readme && verb
 ```
 
-### Running tests
+</details>
 
-Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
+### Related projects
 
-```sh
-$ npm install && npm test
-```
+You might also be interested in these projects:
+
+* [ansi-wrap](https://www.npmjs.com/package/ansi-wrap): Create ansi colors by passing the open and close codes. | [homepage](https://github.com/jonschlinkert/ansi-wrap "Create ansi colors by passing the open and close codes.")
+* [strip-color](https://www.npmjs.com/package/strip-color): Strip ANSI color codes from a string. No dependencies. | [homepage](https://github.com/jonschlinkert/strip-color "Strip ANSI color codes from a string. No dependencies.")
+
+### Contributors
+
+| **Commits** | **Contributor** | 
+| --- | --- |
+| 32 | [doowb](https://github.com/doowb) |
+| 10 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 6 | [lukeed](https://github.com/lukeed) |
+| 2 | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |
+| 1 | [madhavarshney](https://github.com/madhavarshney) |
+| 1 | [chapterjason](https://github.com/chapterjason) |
 
 ### Author
 
 **Brian Woodward**
 
-* [github/doowb](https://github.com/doowb)
-* [twitter/doowb](https://twitter.com/doowb)
+* [GitHub Profile](https://github.com/doowb)
+* [Twitter Profile](https://twitter.com/doowb)
+* [LinkedIn Profile](https://linkedin.com/in/woodwardbrian)
 
 ### License
 
@@ -313,4 +270,4 @@ Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.7.0, on July 16, 2018._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on August 16, 2018._

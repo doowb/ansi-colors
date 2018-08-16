@@ -1,139 +1,101 @@
 'use strict';
 
-const util = require('util');
-const ansiRegex = /\u001b\[[0-9]+m/ig;
-const colors = { enabled: true, visible: true, ansiRegex };
-const symbols = process.platform === 'win32' ? {
-  check: '√',
-  cross: '×',
-  info: 'i',
-  line: '─',
-  pointer: '>',
-  pointerSmall: '»',
-  question: '?',
-  warning: '‼'
-} : {
-  check: '✔',
-  cross: '✖',
-  info: 'ℹ',
-  line: '─',
-  pointer: '❯',
-  pointerSmall: '›',
-  question: '?',
-  warning: '⚠'
-};
+const colors = { enabled: true, visible: true };
+const styles = colors.styles = {};
 
-const styles = {
-  // modifiers
-  reset: [0, 0],
-  bold: [1, 22],
-  dim: [2, 22],
-  italic: [3, 23],
-  underline: [4, 24],
-  inverse: [7, 27],
-  hidden: [8, 28],
-  strikethrough: [9, 29],
+function ansi(codes) {
+  codes.open = `\u001b[${codes[0]}m`;
+  codes.close = `\u001b[${codes[1]}m`;
+  return codes;
+}
 
-  // colors
-  black: [30, 39],
-  red: [31, 39],
-  green: [32, 39],
-  yellow: [33, 39],
-  blue: [34, 39],
-  magenta: [35, 39],
-  cyan: [36, 39],
-  white: [37, 39],
-  gray: [90, 39],
-  grey: [90, 39],
+function wrap(style, str, i) {
+  let { open, close } = style;
+  return open + (i > 0 ? str.split(close).join(open) : str) + close;
+}
 
-  // bright colors
-  blackBright: [90, 39],
-  redBright: [91, 39],
-  greenBright: [92, 39],
-  yellowBright: [93, 39],
-  blueBright: [94, 39],
-  magentaBright: [95, 39],
-  cyanBright: [96, 39],
-  whiteBright: [97, 39],
-
-  // background colors
-  bgBlack: [40, 49],
-  bgRed: [41, 49],
-  bgGreen: [42, 49],
-  bgYellow: [43, 49],
-  bgBlue: [44, 49],
-  bgMagenta: [45, 49],
-  bgCyan: [46, 49],
-  bgWhite: [47, 49],
-
-  // bright background colors
-  bgBlackBright: [100, 49],
-  bgRedBright: [101, 49],
-  bgGreenBright: [102, 49],
-  bgYellowBright: [103, 49],
-  bgBlueBright: [104, 49],
-  bgMagentaBright: [105, 49],
-  bgCyanBright: [106, 49],
-  bgWhiteBright: [107, 49]
-};
-
-const isString = val => val && typeof val === 'string';
-const unstyle = val => isString(val) ? val.replace(ansiRegex, '') : val;
-const hasOpen = (input, open) => input.slice(0, open.length) === open;
-const hasClose = (input, close) => input.slice(-close.length) === close;
-const color = (str, style, hasNewline) => {
-  const { open, close } = style;
-  if (!(hasOpen(str, open) && hasClose(str, close))) {
-    str = style.open + str.replace(style.closeRe, style.open) + style.close;
-  }
-  if (hasNewline) {
-    return str.replace(/(\r?\n)/g, `${style.close}$1${style.open}`);
-  }
-  return str;
-};
-
-function wrap(...args) {
-  if (colors.visible === false) return '';
-
-  let str = util.format(...args);
-  if (colors.enabled === false) return str;
-  if (str.trim() === '') return str;
-
-  const newline = str.includes('\n');
-  for (const key of this.stack) {
-    str = color(str, styles[key], newline);
-  }
+function style(input, stack) {
+  let str = '' + input;
+  let n = stack.length;
+  let i = 0;
+  while (n-- > 0) str = wrap(styles[stack[n]], str, i++);
   return str;
 }
 
-function style(stack) {
-  const create = (...args) => wrap.call(create, ...args);
-  create.stack = stack;
-  Reflect.setPrototypeOf(create, colors);
-  return create;
-}
+function define(name, codes) {
+  styles[name] = ansi(codes);
 
-function decorate(style) {
-  style.open = `\u001b[${style[0]}m`;
-  style.close = `\u001b[${style[1]}m`;
-  style.closeRe = new RegExp(`\\u001b\\[${style[1]}m`, 'g');
-  return style;
-}
+  let color = input => {
+    if (colors.enabled === false) return input;
+    if (colors.visible === false) return '';
+    let stack = color.stack;
+    color.stack = [name];
+    return style(input, stack);
+  };
 
-for (const key of Object.keys(styles)) {
-  decorate(styles[key]);
-  Reflect.defineProperty(colors, key, {
+  Reflect.setPrototypeOf(color, colors);
+  Reflect.defineProperty(colors, name, {
+    configurable: true,
     get() {
-      return style(this.stack ? this.stack.concat(key) : [key]);
+      if (!this.stack) {
+        color.stack = [name];
+      } else if (!this.stack.includes(name)) {
+        color.stack = this.stack.concat(name);
+      }
+      return color;
     }
   });
 }
 
-colors.stripColor = colors.strip = colors.unstyle = unstyle;
-colors.styles = styles;
-colors.symbols = symbols;
-colors.ok = (...args) => {
-  return colors.green(symbols.check) + ' ' + util.format(...args);
-};
+define('reset', [0, 0]);
+define('bold', [1, 22]);
+define('dim', [2, 22]);
+define('italic', [3, 23]);
+define('underline', [4, 24]);
+define('inverse', [7, 27]);
+define('hidden', [8, 28]);
+define('strikethrough', [9, 29]);
 
+define('black', [30, 39]);
+define('red', [31, 39]);
+define('green', [32, 39]);
+define('yellow', [33, 39]);
+define('blue', [34, 39]);
+define('magenta', [35, 39]);
+define('cyan', [36, 39]);
+define('white', [37, 39]);
+define('gray', [90, 39]);
+define('grey', [90, 39]);
+
+define('bgBlack', [40, 49]);
+define('bgRed', [41, 49]);
+define('bgGreen', [42, 49]);
+define('bgYellow', [43, 49]);
+define('bgBlue', [44, 49]);
+define('bgMagenta', [45, 49]);
+define('bgCyan', [46, 49]);
+define('bgWhite', [47, 49]);
+
+define('blackBright', [90, 39]);
+define('redBright', [91, 39]);
+define('greenBright', [92, 39]);
+define('yellowBright', [93, 39]);
+define('blueBright', [94, 39]);
+define('magentaBright', [95, 39]);
+define('cyanBright', [96, 39]);
+define('whiteBright', [97, 39]);
+
+define('bgBlackBright', [100, 49]);
+define('bgRedBright', [101, 49]);
+define('bgGreenBright', [102, 49]);
+define('bgYellowBright', [103, 49]);
+define('bgBlueBright', [104, 49]);
+define('bgMagentaBright', [105, 49]);
+define('bgCyanBright', [106, 49]);
+define('bgWhiteBright', [107, 49]);
+
+// ansiRegex modified from node.js readline: https://git.io/fNWFP
+colors.ansiRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+colors.unstyle = val => typeof val === 'string' ? val.replace(colors.ansiRegex, '') : val;
+colors.symbols = require('./symbols');
 module.exports = colors;

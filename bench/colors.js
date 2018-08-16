@@ -1,8 +1,10 @@
+'use strict';
+
 const { Suite } = require('benchmark');
-const cursor = require('ansi')(process.stdout);
-const color = require('..');
+const turbocolor = require('turbocolor');
 const chalk = require('chalk');
-const clorox = require('clorox');
+const kleur = require('kleur');
+const colors = require('..');
 const names = [
   'reset',
   'bold',
@@ -27,15 +29,12 @@ const names = [
   'bgYellow',
   'bgBlue',
   'bgMagenta',
-  'bgCyan',
-  'bgWhite'
+  'bgCyan'
 ];
 
-const cycle = (e, nl) => {
-  cursor.eraseLine();
-  cursor.horizontalAbsolute();
-  cursor.write('  ' + e.target);
-  if (nl) cursor.write('\n');
+const cycle = (e, newline) => {
+  process.stdout.write('\u001b[G');
+  process.stdout.write(`  ${e.target}` + (newline ? '\n' : ''));
 };
 
 function bench(name) {
@@ -57,32 +56,39 @@ function bench(name) {
 
 bench('All Colors')
   .add('ansi-colors', () => {
-    names.forEach(name => color[name]('foo'));
+    names.forEach(name => colors[name]('foo'));
+  })
+  .add('kleur', () => {
+    names.forEach(name => kleur[name]('foo'));
+  })
+  .add('turbocolor', () => {
+    names.forEach(name => turbocolor[name]('foo'));
   })
   .add('chalk', () => {
     names.forEach(name => chalk[name]('foo'));
   })
-  .add('clorox', () => {
-    names.forEach(name => clorox[name]('foo').toString());
-  })
   .run();
 
-bench('Stacked colors')
+bench('Chained colors')
   .add('ansi-colors', () => {
-    names.forEach(name => color[name].bold.underline.italic('foo'));
+    names.forEach(name => colors[name].bold.underline.italic('foo'));
+  })
+  .add('kleur', () => {
+    names.forEach(name => kleur[name].bold.underline.italic('foo'));
+  })
+  .add('turbocolor', () => {
+    names.forEach(name => turbocolor[name].bold.underline.italic('foo'));
   })
   .add('chalk', () => {
     names.forEach(name => chalk[name].bold.underline.italic('foo'));
   })
-  .add('clorox', () => {
-    names.forEach(name => clorox[name].bold.underline.italic('foo').toString());
-  })
   .run();
 
 bench('Nested colors')
-  .add('ansi-colors', () => fixture(color))
+  .add('ansi-colors', () => fixture(colors))
+  .add('kleur', () => fixture(kleur))
+  .add('turbocolor', () => fixture(turbocolor))
   .add('chalk', () => fixture(chalk))
-  .add('clorox', () => fixture(clorox).toString())
   .run();
 
 function fixture(lib) {

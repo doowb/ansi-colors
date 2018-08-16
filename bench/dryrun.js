@@ -1,7 +1,8 @@
 const lib = process.argv[2] || 'colors';
 const libs = {
   chalk: require('chalk'),
-  clorox: require('clorox'),
+  turbo: require('turbocolor'),
+  kleur: require('kleur'),
   colors: require('..')
 };
 const color = libs[lib];
