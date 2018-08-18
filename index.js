@@ -1,25 +1,33 @@
 'use strict';
 
+const isWindows = process.platform === 'win32';
 const colors = { enabled: true, visible: true };
 const styles = colors.styles = {};
 
 function ansi(codes) {
   codes.open = `\u001b[${codes[0]}m`;
   codes.close = `\u001b[${codes[1]}m`;
-  codes.closeRe = new RegExp('\\u001b\\[' + codes[1] + 'm', 'g');
+  codes.closeRe = new RegExp(`\\u001b\\[${codes[1]}m`, 'g');
   return codes;
 }
 
-function wrap(style, str, i) {
+function wrap(style, str) {
   let { open, close, closeRe } = style;
-  return open + (i > 0 || colors.ansiRegex.test(str) ? str.replace(closeRe, open) : str) + close;
+  str = open + (str.includes(close) ? str.replace(closeRe, open) : str) + close;
+
+  // see https://github.com/chalk/chalk/pull/92, thanks to the
+  // chalk contributors for this fix
+  if (!isWindows && str.includes('\n')) {
+    str = str.replace(/\r?\n/g, `${close}$&${open}`);
+  }
+  return str;
 }
 
 function style(input, stack) {
   let str = '' + input;
   let n = stack.length;
   let i = 0;
-  while (n-- > 0) str = wrap(styles[stack[n]], str, i++);
+  while (n-- > 0) str = wrap(styles[stack[n]], str);
   return str;
 }
 
@@ -36,7 +44,6 @@ function define(name, codes) {
 
   Reflect.setPrototypeOf(color, colors);
   Reflect.defineProperty(colors, name, {
-    configurable: true,
     get() {
       if (!this.stack) {
         color.stack = [name];
