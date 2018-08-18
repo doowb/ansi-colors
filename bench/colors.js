@@ -1,9 +1,7 @@
 'use strict';
 
 const { Suite } = require('benchmark');
-const turbocolor = require('turbocolor');
 const chalk = require('chalk');
-const kleur = require('kleur');
 const colors = require('..');
 const names = [
   'reset',
@@ -58,12 +56,6 @@ bench('All Colors')
   .add('ansi-colors', () => {
     names.forEach(name => colors[name]('foo'));
   })
-  .add('kleur', () => {
-    names.forEach(name => kleur[name]('foo'));
-  })
-  .add('turbocolor', () => {
-    names.forEach(name => turbocolor[name]('foo'));
-  })
   .add('chalk', () => {
     names.forEach(name => chalk[name]('foo'));
   })
@@ -73,12 +65,6 @@ bench('Chained colors')
   .add('ansi-colors', () => {
     names.forEach(name => colors[name].bold.underline.italic('foo'));
   })
-  .add('kleur', () => {
-    names.forEach(name => kleur[name].bold.underline.italic('foo'));
-  })
-  .add('turbocolor', () => {
-    names.forEach(name => turbocolor[name].bold.underline.italic('foo'));
-  })
   .add('chalk', () => {
     names.forEach(name => chalk[name].bold.underline.italic('foo'));
   })
@@ -86,8 +72,6 @@ bench('Chained colors')
 
 bench('Nested colors')
   .add('ansi-colors', () => fixture(colors))
-  .add('kleur', () => fixture(kleur))
-  .add('turbocolor', () => fixture(turbocolor))
   .add('chalk', () => fixture(chalk))
   .run();
 

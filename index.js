@@ -1,6 +1,5 @@
 'use strict';
 
-const isWindows = process.platform === 'win32';
 const colors = { enabled: true, visible: true };
 const styles = colors.styles = {};
 
@@ -16,8 +15,9 @@ function wrap(style, str) {
   str = open + (str.includes(close) ? str.replace(closeRe, open) : str) + close;
 
   // see https://github.com/chalk/chalk/pull/92, thanks to the
-  // chalk contributors for this fix
-  if (!isWindows && str.includes('\n')) {
+  // chalk contributors for this fix. However, we've confirmed that
+  // this issue is also present in Windows terminals
+  if (str.includes('\n')) {
     str = str.replace(/\r?\n/g, `${close}$&${open}`);
   }
   return str;
@@ -26,7 +26,6 @@ function wrap(style, str) {
 function style(input, stack) {
   let str = '' + input;
   let n = stack.length;
-  let i = 0;
   while (n-- > 0) str = wrap(styles[stack[n]], str);
   return str;
 }

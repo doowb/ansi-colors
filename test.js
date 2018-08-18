@@ -82,7 +82,11 @@ describe('colors', () => {
   });
 
   it('should correctly wrap the colors on nested colors', () => {
-    assert(colors.red(`R${colors.green(`G${colors.blue("B")}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
+    assert.equal(colors.red(`R${colors.green(`G${colors.blue("B")}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
+  });
+
+  it('should correctly wrap colors around newlines', () => {
+    assert.equal(colors.bgRed('foo\nbar') + 'baz qux', '\u001b[41mfoo\u001b[49m\n\u001b[41mbar\u001b[49mbaz qux');
   });
 });
 

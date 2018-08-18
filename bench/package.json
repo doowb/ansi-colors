@@ -4,9 +4,7 @@
   "dependencies": {
     "benchmark": "^2.1.4",
     "chalk": "^2.4.0",
-    "clorox": "^2.2.0",
-    "kleur": "^2.0.1",
-    "turbocolor": "^2.4.1"
+    "clorox": "^2.2.0"
   },
   "lintDeps": {
     "dependencies": {
