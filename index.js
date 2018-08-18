@@ -6,12 +6,13 @@ const styles = colors.styles = {};
 function ansi(codes) {
   codes.open = `\u001b[${codes[0]}m`;
   codes.close = `\u001b[${codes[1]}m`;
+  codes.closeRe = new RegExp('\\u001b\\[' + codes[1] + 'm', 'g');
   return codes;
 }
 
 function wrap(style, str, i) {
-  let { open, close } = style;
-  return open + (i > 0 ? str.split(close).join(open) : str) + close;
+  let { open, close, closeRe } = style;
+  return open + (i > 0 || colors.ansiRegex.test(str) ? str.replace(closeRe, open) : str) + close;
 }
 
 function style(input, stack) {

@@ -68,7 +68,7 @@ describe('colors', () => {
     assert.equal(dim('FOO'), foo);
   });
 
-  it('should correctly reset the color stack on nested bound colors', () => {
+  it('should correctly reset the color stack on chained bound colors', () => {
     let red = colors.dim.red;
     let dim = colors.dim;
     let underline = red.underline;
@@ -79,6 +79,10 @@ describe('colors', () => {
     assert.equal(dim('FOO'), foo);
     assert.equal(red.underline('FOO'), codes);
     assert.equal(dim('FOO'), foo);
+  });
+
+  it('should correctly wrap the colors on nested colors', () => {
+    assert(colors.red(`R${colors.green(`G${colors.blue("B")}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
   });
 });
 
