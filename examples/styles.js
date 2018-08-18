@@ -1,4 +1,5 @@
 
+const util = require('util');
 const c = require('..');
 c.info = (...args) => {
   return c.bold(c.cyan('[info] ')) + c.cyan(...args);
@@ -18,8 +19,8 @@ console.log(c.bold.red('this is a bold red message'));
 console.log(c.bold.italic('this is a bold italicized message'));
 console.log(c.bold.yellow.italic('this is a bold yellow italicized message'));
 console.log(c.green.bold.underline('this is a bold green underlined message'));
-console.log(c.bold.red('%s:%s', 'foo', 'bar', 'baz'));
-console.log(c.bold.bold('%s:%s:%s', 'foo', c.red('bar'), 'baz'));
+console.log(c.bold.red(util.format('%s:%s', 'foo', 'bar', 'baz')));
+console.log(c.bold.bold(util.format('%s:%s:%s', 'foo', c.red('bar'), 'baz')));
 console.log(c.red('Some', 'red', 'text', 'to', 'display'));
 
 // // console.log(colors);
