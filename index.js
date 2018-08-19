@@ -3,56 +3,47 @@
 const colors = { enabled: true, visible: true };
 const styles = colors.styles = {};
 
-function ansi(codes) {
+const ansi = codes => {
   codes.open = `\u001b[${codes[0]}m`;
   codes.close = `\u001b[${codes[1]}m`;
-  codes.closeRe = new RegExp(`\\u001b\\[${codes[1]}m`, 'g');
+  codes.regex = new RegExp(`\\u001b\\[${codes[1]}m`, 'g');
   return codes;
-}
+};
 
-function wrap(style, str) {
-  let { open, close, closeRe } = style;
-  str = open + (str.includes(close) ? str.replace(closeRe, open) : str) + close;
-
+const wrap = (style, str, nl) => {
+  let { open, close, regex } = style;
+  str = open + (str.includes(close) ? str.replace(regex, open) : str) + close;
   // see https://github.com/chalk/chalk/pull/92, thanks to the
   // chalk contributors for this fix. However, we've confirmed that
   // this issue is also present in Windows terminals
-  if (str.includes('\n')) {
-    str = str.replace(/\r?\n/g, `${close}$&${open}`);
-  }
-  return str;
-}
+  return nl ? str.replace(/\r?\n/g, `${close}$&${open}`) : str;
+};
 
-function style(input, stack) {
+const style = (input, stack) => {
   let str = '' + input;
+  let nl = str.includes('\n');
   let n = stack.length;
-  while (n-- > 0) str = wrap(styles[stack[n]], str);
+  while (n-- > 0) str = wrap(styles[stack[n]], str, nl);
   return str;
-}
+};
 
-function define(name, codes) {
+const define = (name, codes) => {
   styles[name] = ansi(codes);
 
   let color = input => {
     if (colors.enabled === false) return input;
     if (colors.visible === false) return '';
-    let stack = color.stack;
-    color.stack = [name];
-    return style(input, stack);
+    return style(input, color.stack);
   };
 
   Reflect.setPrototypeOf(color, colors);
   Reflect.defineProperty(colors, name, {
     get() {
-      if (!this.stack) {
-        color.stack = [name];
-      } else if (!this.stack.includes(name)) {
-        color.stack = this.stack.concat(name);
-      }
+      color.stack = this.stack ? this.stack.concat(name) : [name];
       return color;
     }
   });
-}
+};
 
 define('reset', [0, 0]);
 define('bold', [1, 22]);

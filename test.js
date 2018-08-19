@@ -4,7 +4,7 @@ require('mocha');
 const assert = require('assert');
 const colors = require('./');
 
-describe('colors', () => {
+describe('ansi-colors', () => {
   it('should wrap a string with ansi codes:', () => {
     assert.equal(colors.bgBlack('string'), '\u001b[40mstring\u001b[49m');
     assert.equal(colors.bgBlue('string'), '\u001b[44mstring\u001b[49m');
@@ -55,6 +55,13 @@ describe('colors', () => {
     assert.equal(colors.bold.red('string'), '\u001b[1m\u001b[31mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.white('string'), '\u001b[1m\u001b[37mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.yellow('string'), '\u001b[1m\u001b[33mstring\u001b[39m\u001b[22m');
+  });
+
+  it('should create a color stack for chained colors', () => {
+    let dim = colors.dim;
+    assert.deepEqual(dim.stack, ['dim']);
+    assert.deepEqual(dim.gray.stack, ['dim', 'gray']);
+    assert.deepEqual(dim.gray.underline.stack, ['dim', 'gray', 'underline']);
   });
 
   it('should correctly reset the color stack on bound colors', () => {
