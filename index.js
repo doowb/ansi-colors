@@ -1,7 +1,6 @@
 'use strict';
 
-const colors = { enabled: true, visible: true };
-const styles = colors.styles = {};
+const colors = { enabled: true, visible: true, styles: {} };
 
 const ansi = codes => {
   codes.open = `\u001b[${codes[0]}m`;
@@ -20,25 +19,21 @@ const wrap = (style, str, nl) => {
 };
 
 const style = (input, stack) => {
+  if (colors.enabled === false) return input;
+  if (colors.visible === false) return '';
   let str = '' + input;
   let nl = str.includes('\n');
   let n = stack.length;
-  while (n-- > 0) str = wrap(styles[stack[n]], str, nl);
+  while (n-- > 0) str = wrap(colors.styles[stack[n]], str, nl);
   return str;
 };
 
 const define = (name, codes) => {
-  styles[name] = ansi(codes);
-
-  let color = input => {
-    if (colors.enabled === false) return input;
-    if (colors.visible === false) return '';
-    return style(input, color.stack);
-  };
-
-  Reflect.setPrototypeOf(color, colors);
+  colors.styles[name] = ansi(codes);
   Reflect.defineProperty(colors, name, {
     get() {
+      let color = input => style(input, color.stack);
+      Reflect.setPrototypeOf(color, colors);
       color.stack = this.stack ? this.stack.concat(name) : [name];
       return color;
     }

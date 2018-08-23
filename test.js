@@ -56,7 +56,9 @@ describe('ansi-colors', () => {
     assert.equal(colors.bold.white('string'), '\u001b[1m\u001b[37mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.yellow('string'), '\u001b[1m\u001b[33mstring\u001b[39m\u001b[22m');
   });
+});
 
+describe('chaining', () => {
   it('should create a color stack for chained colors', () => {
     let dim = colors.dim;
     assert.deepEqual(dim.stack, ['dim']);
@@ -75,25 +77,56 @@ describe('ansi-colors', () => {
     assert.equal(dim('FOO'), foo);
   });
 
-  it('should correctly reset the color stack on chained bound colors', () => {
-    let red = colors.dim.red;
+  it('should correctly reset the color stack on chained _bound_ colors', () => {
+    let dimRed = colors.dim.red;
     let dim = colors.dim;
-    let underline = red.underline;
+    let underline = dimRed.underline;
     let foo = dim('FOO');
-    let codes = red.underline('FOO');
+    let codes = dimRed.underline('FOO');
     assert.equal(dim('FOO'), foo);
-    assert.equal(red.underline('FOO'), codes);
+    assert.equal(dimRed.underline('FOO'), codes);
     assert.equal(dim('FOO'), foo);
-    assert.equal(red.underline('FOO'), codes);
+    assert.equal(dimRed.underline('FOO'), codes);
     assert.equal(dim('FOO'), foo);
-  });
+    assert.equal(underline('foo'), colors.dim.red.underline('foo'));
 
+    let redBold = colors.red.bold;
+    let blueBold = colors.red.blue.bold('Blue Bold');
+    assert.equal(blueBold, '\u001b[31m\u001b[34m\u001b[1mBlue Bold\u001b[22m\u001b[31m\u001b[39m');
+    assert.equal(redBold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
+    assert.equal(colors.red.bold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
+  });
+});
+
+describe('nesting', () => {
   it('should correctly wrap the colors on nested colors', () => {
-    assert.equal(colors.red(`R${colors.green(`G${colors.blue("B")}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
+    assert.equal(colors.red(`R${colors.green(`G${colors.blue('B')}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
   });
+});
 
+describe('newlines', () => {
   it('should correctly wrap colors around newlines', () => {
     assert.equal(colors.bgRed('foo\nbar') + 'baz qux', '\u001b[41mfoo\u001b[49m\n\u001b[41mbar\u001b[49mbaz qux');
+  });
+});
+
+describe('enabled', () => {
+  it('should disable ansi styling when colors.enabled is false', () => {
+    colors.enabled = false;
+    assert.equal(colors.red('foo bar'), 'foo bar');
+    assert.equal(colors.blue('foo bar'), 'foo bar');
+    assert.equal(colors.bold('foo bar'), 'foo bar');
+    colors.enabled = true;
+  });
+});
+
+describe('visible', () => {
+  it('should mute output when colors.visible is false', () => {
+    colors.visible = false;
+    assert.equal(colors.red('foo bar'), '');
+    assert.equal(colors.blue('foo bar'), '');
+    assert.equal(colors.bold('foo bar'), '');
+    colors.visible = true;
   });
 });
 
