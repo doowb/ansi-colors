@@ -1,6 +1,6 @@
 # ansi-colors [![NPM version](https://img.shields.io/npm/v/ansi-colors.svg?style=flat)](https://www.npmjs.com/package/ansi-colors) [![NPM monthly downloads](https://img.shields.io/npm/dm/ansi-colors.svg?style=flat)](https://npmjs.org/package/ansi-colors) [![NPM total downloads](https://img.shields.io/npm/dt/ansi-colors.svg?style=flat)](https://npmjs.org/package/ansi-colors) [![Linux Build Status](https://img.shields.io/travis/doowb/ansi-colors.svg?style=flat&label=Travis)](https://travis-ci.org/doowb/ansi-colors) [![Windows Build Status](https://img.shields.io/appveyor/ci/doowb/ansi-colors.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/doowb/ansi-colors)
 
-> Easily add ANSI colors to your text and symbols in the terminal. A faster drop-in replacement for chalk, kleur and turbocolor (without the dependencies and rendering bugs).
+> Easily add ANSI colors to your text and symbols in the terminal. A faster drop-in replacement for chalk and kleur (without the dependencies and rendering bugs).
 
 Please consider following this project's author, [Brian Woodward](https://github.com/doowb), and consider starring the project to show your :heart: and support.
 
@@ -88,7 +88,7 @@ console.log(c.unstyle(c.blue.bold('foo bar baz')));
 
 **Note** that bright and bright-background colors are not always supported.
 
-| Colors | Background Colors | Bright Colors | Bright Background Colors | 
+| Colors | Background Colors | Bright Colors | Bright Background Colors |
 | --- | --- | --- | --- |
 | black | bgBlack | blackBright | bgBlackBright |
 | red | bgRed | redBright | bgRedBright |
@@ -127,11 +127,11 @@ _(`gray` is the U.S. spelling, `grey` is more commonly used in the Canada and U.
 <details>
 <summary><strong>Beware of false claims!</strong></summary>
 
-### Kleur and turbocolor are buggy and incomplete
+### Kleur is buggy and incomplete
 
-tldr; kleur and turbocolor do not have parity with chalk or ansi-colors, and they fail too many of the unit tests to be included in our benchmarks.
+tldr; kleur does not have parity with chalk or ansi-colors, and it fails too many of the unit tests to be included in our benchmarks.
 
-You might have seen claims from [kleur](https://github.com/lukeed/kleur) or [turbocolor](https://github.com/jorgebucaran/turbocolor) that they are "faster than ansi-colors". Both libraries are unofficial forks of ansi-colors, and in an attempt to appear faster and differentiate from ansi-colors, _both libraries removed crucial code that was necessary for resetting chained colors_.
+You might have seen claims from [kleur](https://github.com/lukeed/kleur) that it is "faster than ansi-colors". This library is an unofficial fork of ansi-colors, and in an attempt to appear faster and differentiate from ansi-colors, _they have removed crucial code that was necessary for resetting chained colors_.
 
 To illustrate the bug, simply do the following with `kleur` (as of v2.0.1):
 
@@ -144,30 +144,17 @@ const blue = kleur.underline.blue;
 console.log(kleur.underline('I should be underlined and white'));
 ```
 
-Same with `turbocolor` (as of v2.4.5):
-
-```js
-const turbocolor = require('turbocolor');
-const red = turbocolor.bold.underline.red;
-console.log(turbocolor.bold('I should be bold and white'));
-
-const blue = turbocolor.underline.blue;
-console.log(turbocolor.underline('I should be underlined and white'));
-```
-
-Both libraries render the following:
+It renders the following:
 
 ![image](https://user-images.githubusercontent.com/383994/44202955-7ee62100-a11b-11e8-8ee6-652dbde52911.png)
 
 **Other pitfalls**
 
-Beyond the aforementioned rendering bug, neither kleur nor turbocolor can be used as a drop-in replacement for chalk:
+Beyond the aforementioned rendering bug, kleur can't be used as a drop-in replacement for chalk because:
 
-* both libraries omit code that prevents background bleed around newlines (try doing `console.log(kleur.bgRed('foo\nbar') + 'baz qux')` and `console.log(turbocolor.bgRed('foo\nbar') + 'baz qux')`).
-* both libraries fail half of the ansi-colors unit tests (chalk passes them all)
-* neither library supports bright colors (chalk and ansi-colors do)
-* neither library supports bright-background colors (chalk and ansi-colors do)
-* turbocolor swaps bright-background colors for background colors. (surprise! turbocolor gives you unexpected colors in the terminal!)
+* it fails half of the ansi-colors unit tests (chalk passes them all)
+* it does not support bright colors (chalk and ansi-colors do)
+* it does not support bright-background colors (chalk and ansi-colors do)
 
 </details>
 
@@ -267,7 +254,7 @@ You might also be interested in these projects:
 
 ### Contributors
 
-| **Commits** | **Contributor** | 
+| **Commits** | **Contributor** |
 | --- | --- |
 | 35 | [doowb](https://github.com/doowb) |
 | 23 | [jonschlinkert](https://github.com/jonschlinkert) |
