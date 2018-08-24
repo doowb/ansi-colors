@@ -70,3 +70,5 @@ console.log(colors.red(`a red ${colors.white('white')} red ${colors.red('red')} 
 console.timeEnd('diff');
 console.timeEnd('colors total');
 console.timeEnd('grand total');
+
+console.log(colors.yellow(`foo ${colors.red.bold('red')} bar ${colors.cyan('cyan')} baz`));

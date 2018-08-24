@@ -54,11 +54,7 @@ console.log(c.green.bold.underline('this is a bold green underlined message'));
 ### Nested colors
 
 ```js
-// using template literals
 console.log(c.yellow(`foo ${c.red.bold('red')} bar ${c.cyan('cyan')} baz`));
-
-// or as arguments
-console.log(c.yellow('foo', c.red.bold('red'), 'bar', c.cyan('cyan'), 'baz'));
 ```
 
 ![image](https://user-images.githubusercontent.com/383994/39635817-8ed93d44-4f8c-11e8-8afd-8c3ea35f5fbe.png)
@@ -274,7 +270,7 @@ You might also be interested in these projects:
 | **Commits** | **Contributor** | 
 | --- | --- |
 | 35 | [doowb](https://github.com/doowb) |
-| 18 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 23 | [jonschlinkert](https://github.com/jonschlinkert) |
 | 6 | [lukeed](https://github.com/lukeed) |
 | 2 | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |
 | 1 | [madhavarshney](https://github.com/madhavarshney) |
