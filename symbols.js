@@ -4,24 +4,40 @@ const isWindows = process.platform === 'win32';
 const isLinux = process.platform === 'linux';
 
 const windows = {
+  bullet: '•',
   check: '√',
   cross: '×',
+  ellipsis: '...',
+  heart: '❤',
   info: 'i',
   line: '─',
+  middot: '·',
+  minus: '－',
+  plus: '＋',
+  question: '?',
+  questionSmall: '﹖',
   pointer: '>',
   pointerSmall: '»',
-  question: '?',
   warning: '‼'
 };
 
 const other = {
+  ballotCross: '✘',
+  bullet: '•',
   check: '✔',
   cross: '✖',
+  ellipsis: '…',
+  heart: '❤',
   info: 'ℹ',
   line: '─',
+  middot: '·',
+  minus: '－',
+  plus: '＋',
+  question: '?',
+  questionFull: '？',
+  questionSmall: '﹖',
   pointer: isLinux ? '▸' : '❯',
   pointerSmall: isLinux ? '‣' : '›',
-  question: '?',
   warning: '⚠'
 };
 
