@@ -70,7 +70,6 @@
     "red",
     "reset",
     "strikethrough",
-    "turbocolor",
     "underline",
     "white",
     "yellow"
@@ -102,8 +101,7 @@
     "reflinks": [
       "colors",
       "kleur",
-      "supports-color",
-      "turbocolor"
+      "supports-color"
     ]
   }
 }
