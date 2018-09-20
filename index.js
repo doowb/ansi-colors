@@ -90,5 +90,6 @@ define('bgWhiteBright', [107, 49]);
 // ansiRegex modified from node.js readline: https://git.io/fNWFP
 colors.ansiRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
 colors.unstyle = val => typeof val === 'string' ? val.replace(colors.ansiRegex, '') : val;
+colors.stripColor = colors.unstyle;
 colors.symbols = require('./symbols');
 module.exports = colors;
