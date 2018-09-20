@@ -133,5 +133,18 @@ describe('visible', () => {
 describe('unstyle', () => {
   it('should strip ANSI codes', () => {
     assert.equal(colors.unstyle(colors.blue.bold('foo bar baz')), 'foo bar baz');
+    assert.equal(colors.stripColor(colors.blue.bold('foo bar baz')), 'foo bar baz');
+  });
+});
+
+describe('hasColor', () => {
+  it('should return true if a string has ansi styling', () => {
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    assert(colors.hasAnsi(colors.blue.bold('foo bar baz')));
+  });
+
+  it('should return false if a string does not have ansi styling', () => {
+    assert(!colors.hasColor('foo bar baz'));
+    assert(!colors.hasAnsi('foo bar baz'));
   });
 });
