@@ -2,6 +2,7 @@
 
 require('mocha');
 const assert = require('assert');
+const decache = require('decache');
 const colors = require('./');
 
 describe('ansi-colors', () => {
@@ -117,6 +118,30 @@ describe('enabled', () => {
     assert.equal(colors.blue('foo bar'), 'foo bar');
     assert.equal(colors.bold('foo bar'), 'foo bar');
     colors.enabled = true;
+  });
+});
+
+describe('FORCE_COLOR', () => {
+  beforeEach(() => {
+    delete process.env.FORCE_COLOR;
+    decache('./');
+  });
+
+  it('should be enabled if FORCE_COLOR is not set', () => {
+    const colors = require('./');
+    assert.equal(colors.enabled, true);
+  });
+
+  it('should be enabled if FORCE_COLOR is set to 1', () => {
+    process.env.FORCE_COLOR = '1';
+    const colors = require('./');
+    assert.equal(colors.enabled, true);
+  });
+
+  it('should be disabled if FORCE_COLOR is set to 0', () => {
+    process.env.FORCE_COLOR = '0';
+    const colors = require('./');
+    assert.equal(colors.enabled, false);
   });
 });
 

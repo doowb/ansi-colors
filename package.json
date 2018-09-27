@@ -29,6 +29,7 @@
     "test": "mocha"
   },
   "devDependencies": {
+    "decache": "^4.4.0",
     "gulp-format-md": "^1.0.0",
     "justified": "^1.0.1",
     "mocha": "^5.2.0",
