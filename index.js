@@ -23,7 +23,7 @@ const wrap = (style, str, nl) => {
 };
 
 const style = (input, stack) => {
-  if (input === '') return '';
+  if (input === '' || input == null) return '';
   if (colors.enabled === false) return input;
   if (colors.visible === false) return '';
   let str = '' + input;
