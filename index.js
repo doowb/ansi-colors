@@ -2,6 +2,10 @@
 
 const colors = { enabled: true, visible: true, styles: {}, keys: {} };
 
+if ('FORCE_COLOR' in process.env) {
+  colors.enabled = process.env.FORCE_COLOR !== '0' ? true : false;
+}
+
 const ansi = codes => {
   codes.open = `\u001b[${codes[0]}m`;
   codes.close = `\u001b[${codes[1]}m`;
