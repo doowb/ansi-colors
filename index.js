@@ -3,19 +3,19 @@
 const colors = { enabled: true, visible: true, styles: {}, keys: {} };
 
 if ('FORCE_COLOR' in process.env) {
-  colors.enabled = process.env.FORCE_COLOR !== '0' ? true : false;
+  colors.enabled = process.env.FORCE_COLOR !== '0';
 }
 
-const ansi = codes => {
-  codes.open = `\u001b[${codes[0]}m`;
-  codes.close = `\u001b[${codes[1]}m`;
-  codes.regex = new RegExp(`\\u001b\\[${codes[1]}m`, 'g');
-  return codes;
+const ansi = style => {
+  style.open = `\u001b[${style.codes[0]}m`;
+  style.close = `\u001b[${style.codes[1]}m`;
+  style.regex = new RegExp(`\\u001b\\[${style.codes[1]}m`, 'g');
+  return style;
 };
 
 const wrap = (style, str, nl) => {
   let { open, close, regex } = style;
-  str = open + (str.includes(close) ? str.replace(regex, open) : str) + close;
+  str = open + (str.includes(close) ? str.replace(regex, close + open) : str) + close;
   // see https://github.com/chalk/chalk/pull/92, thanks to the
   // chalk contributors for this fix. However, we've confirmed that
   // this issue is also present in Windows terminals
@@ -34,7 +34,7 @@ const style = (input, stack) => {
 };
 
 const define = (name, codes, type) => {
-  colors.styles[name] = ansi(codes);
+  colors.styles[name] = ansi({ name, codes });
   let t = colors.keys[type] || (colors.keys[type] = []);
   t.push(name);
 
@@ -96,16 +96,11 @@ define('bgCyanBright', [106, 49], 'bgBright');
 define('bgWhiteBright', [107, 49], 'bgBright');
 
 /* eslint-disable no-control-regex */
-// ansiRegex modified from node.js readline: https://git.io/fNWFP, which itself
-// is adopted from regex used for ansi escape code splitting in ansi-regex
-// Adopted from https://github.com/chalk/ansi-regex/blob/master/index.js
-// License: MIT, authors: @sindresorhus, Qix-, and arjunmehta Matches all
-// ansi escape code sequences in a string
-colors.ansiRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/gm;
-colors.hasAnsi = str => str && typeof str === 'string' && colors.ansiRegex.test(str);
-colors.unstyle = str => typeof str === 'string' ? str.replace(colors.ansiRegex, '') : str;
-colors.none = colors.clear = str => str; // noop, for programmatic usage
+const re = colors.ansiRegex = /\u001b\[\d+m/gm;
+colors.hasColor = colors.hasAnsi = str => !!str && typeof str === 'string' && re.test(str);
+colors.unstyle = str => typeof str === 'string' ? str.replace(re, '') : str;
+colors.none = colors.clear = colors.noop = str => str; // no-op, for programmatic usage
 colors.stripColor = colors.unstyle;
-colors.hasColor = colors.hasAnsi;
 colors.symbols = require('./symbols');
+colors.define = define;
 module.exports = colors;

@@ -18,13 +18,13 @@ $ npm install --save ansi-colors
 
 ansi-colors is _the fastest Node.js library for terminal styling_. A more performant drop-in replacement for chalk, with no dependencies.
 
-* _Blazing fast_ - fastest terminal styling library in node.js, 10-20x faster than chalk! (See [Beware of false claims!](#beware-of-false-claims))!
+* _Blazing fast_ - Fastest terminal styling library in node.js, 10-20x faster than chalk!
 
 * _Drop-in replacement_ for [chalk](https://github.com/chalk/chalk).
 * _No dependencies_ (Chalk has 7 dependencies in its tree!)
 
 * _Safe_ - Does not modify the `String.prototype` like [colors](https://github.com/Marak/colors.js).
-* Supports [nested colors](#nested-colors).
+* Supports [nested colors](#nested-colors), **and does not have the [nested styling bug](#nested styling bug) that is present in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur)**.
 * Supports [chained colors](#chained-colors).
 * [Toggle color support](#toggle-color-support) on or off.
 
@@ -41,7 +41,7 @@ console.log(c.yellow('This is a yellow string!'));
 
 ![image](https://user-images.githubusercontent.com/383994/39653848-a38e67da-4fc0-11e8-89ae-98c65ebe9dcf.png)
 
-### Chained colors
+## Chained colors
 
 ```js
 console.log(c.bold.red('this is a bold red message'));
@@ -51,7 +51,7 @@ console.log(c.green.bold.underline('this is a bold green underlined message'));
 
 ![image](https://user-images.githubusercontent.com/383994/39635780-7617246a-4f8c-11e8-89e9-05216cc54e38.png)
 
-### Nested colors
+## Nested colors
 
 ```js
 console.log(c.yellow(`foo ${c.red.bold('red')} bar ${c.cyan('cyan')} baz`));
@@ -59,7 +59,31 @@ console.log(c.yellow(`foo ${c.red.bold('red')} bar ${c.cyan('cyan')} baz`));
 
 ![image](https://user-images.githubusercontent.com/383994/39635817-8ed93d44-4f8c-11e8-8afd-8c3ea35f5fbe.png)
 
-### Toggle color support
+### Nested styling bug
+
+`ansi-colors` does not have the nested styling bug found in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur).
+
+```js
+const { bold, red } = require('ansi-styles');
+console.log(bold(`foo ${red.dim('bar')} baz`));
+
+const colorette = require('colorette');
+console.log(colorette.bold(`foo ${colorette.red(colorette.dim('bar'))} baz`));
+
+const kleur = require('kleur');
+console.log(kleur.bold(`foo ${kleur.red.dim('bar')} baz`));
+
+const chalk = require('chalk');
+console.log(chalk.bold(`foo ${chalk.red.dim('bar')} baz`));
+```
+
+**Results in the following**
+
+(sans icons and labels)
+
+![image](https://user-images.githubusercontent.com/383994/47280326-d2ee0580-d5a3-11e8-9611-ea6010f0a253.png)
+
+## Toggle color support
 
 Easily enable/disable colors.
 
@@ -123,53 +147,6 @@ _(`gray` is the U.S. spelling, `grey` is more commonly used in the Canada and U.
 
 * ansi-colors v3.0.4
 * chalk v2.4.1
-
-<details>
-<summary><strong>Beware of false claims!</strong></summary>
-
-### Kleur and turbocolor are buggy and incomplete
-
-tldr; kleur and turbocolor do not have parity with chalk or ansi-colors, and they fail too many of the unit tests to be included in our benchmarks.
-
-You might have seen claims from [kleur](https://github.com/lukeed/kleur) or [turbocolor](https://github.com/jorgebucaran/turbocolor) that they are "faster than ansi-colors". Both libraries are unofficial forks of ansi-colors, and in an attempt to appear faster and differentiate from ansi-colors, _both libraries removed crucial code that was necessary for resetting chained colors_.
-
-To illustrate the bug, simply do the following with `kleur` (as of v2.0.1):
-
-```js
-const kleur = require('kleur');
-const red = kleur.bold.underline.red;
-console.log(kleur.bold('I should be bold and white'));
-
-const blue = kleur.underline.blue;
-console.log(kleur.underline('I should be underlined and white'));
-```
-
-Same with `turbocolor` (as of v2.4.5):
-
-```js
-const turbocolor = require('turbocolor');
-const red = turbocolor.bold.underline.red;
-console.log(turbocolor.bold('I should be bold and white'));
-
-const blue = turbocolor.underline.blue;
-console.log(turbocolor.underline('I should be underlined and white'));
-```
-
-Both libraries render the following:
-
-![image](https://user-images.githubusercontent.com/383994/44202955-7ee62100-a11b-11e8-8ee6-652dbde52911.png)
-
-**Other pitfalls**
-
-Beyond the aforementioned rendering bug, neither kleur nor turbocolor can be used as a drop-in replacement for chalk:
-
-* both libraries omit code that prevents background bleed around newlines (try doing `console.log(kleur.bgRed('foo\nbar') + 'baz qux')` and `console.log(turbocolor.bgRed('foo\nbar') + 'baz qux')`).
-* both libraries fail half of the ansi-colors unit tests (chalk passes them all)
-* neither library supports bright colors (chalk and ansi-colors do)
-* neither library supports bright-background colors (chalk and ansi-colors do)
-* turbocolor swaps bright-background colors for background colors. (surprise! turbocolor gives you unexpected colors in the terminal!)
-
-</details>
 
 ### Mac
 
@@ -270,9 +247,10 @@ You might also be interested in these projects:
 | **Commits** | **Contributor** | 
 | --- | --- |
 | 35 | [doowb](https://github.com/doowb) |
-| 26 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 34 | [jonschlinkert](https://github.com/jonschlinkert) |
 | 6 | [lukeed](https://github.com/lukeed) |
 | 2 | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |
+| 1 | [dwieeb](https://github.com/dwieeb) |
 | 1 | [jorgebucaran](https://github.com/jorgebucaran) |
 | 1 | [madhavarshney](https://github.com/madhavarshney) |
 | 1 | [chapterjason](https://github.com/chapterjason) |
@@ -292,4 +270,4 @@ Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on September 20, 2018._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on October 22, 2018._

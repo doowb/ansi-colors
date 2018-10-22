@@ -100,9 +100,10 @@
       ]
     },
     "reflinks": [
+      "chalk",
+      "colorette",
       "colors",
-      "kleur",
-      "supports-color"
+      "kleur"
     ]
   }
 }

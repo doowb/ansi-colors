@@ -38,7 +38,7 @@ describe('ansi-colors', () => {
     assert.equal(colors.black.bold('string'), '\u001b[30m\u001b[1mstring\u001b[22m\u001b[39m');
     assert.equal(colors.blue.bold('string'), '\u001b[34m\u001b[1mstring\u001b[22m\u001b[39m');
     assert.equal(colors.cyan.bold('string'), '\u001b[36m\u001b[1mstring\u001b[22m\u001b[39m');
-    assert.equal(colors.dim.bold('string'), '\u001b[2m\u001b[1mstring\u001b[2m\u001b[22m');
+    assert.equal(colors.dim.bold('string'), '\u001b[2m\u001b[1mstring\u001b[22m\u001b[2m\u001b[22m');
     assert.equal(colors.gray.bold('string'), '\u001b[90m\u001b[1mstring\u001b[22m\u001b[39m');
     assert.equal(colors.green.bold('string'), '\u001b[32m\u001b[1mstring\u001b[22m\u001b[39m');
     assert.equal(colors.magenta.bold('string'), '\u001b[35m\u001b[1mstring\u001b[22m\u001b[39m');
@@ -49,7 +49,7 @@ describe('ansi-colors', () => {
     assert.equal(colors.bold.black('string'), '\u001b[1m\u001b[30mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.blue('string'), '\u001b[1m\u001b[34mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.cyan('string'), '\u001b[1m\u001b[36mstring\u001b[39m\u001b[22m');
-    assert.equal(colors.bold.dim('string'), '\u001b[1m\u001b[2mstring\u001b[1m\u001b[22m');
+    assert.equal(colors.bold.dim('string'), '\u001b[1m\u001b[2mstring\u001b[22m\u001b[1m\u001b[22m');
     assert.equal(colors.bold.gray('string'), '\u001b[1m\u001b[90mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.green('string'), '\u001b[1m\u001b[32mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.magenta('string'), '\u001b[1m\u001b[35mstring\u001b[39m\u001b[22m');
@@ -93,7 +93,7 @@ describe('chaining', () => {
 
     let redBold = colors.red.bold;
     let blueBold = colors.red.blue.bold('Blue Bold');
-    assert.equal(blueBold, '\u001b[31m\u001b[34m\u001b[1mBlue Bold\u001b[22m\u001b[31m\u001b[39m');
+    assert.equal(blueBold, '\u001b[31m\u001b[34m\u001b[1mBlue Bold\u001b[22m\u001b[39m\u001b[31m\u001b[39m');
     assert.equal(redBold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
     assert.equal(colors.red.bold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
   });
@@ -101,7 +101,7 @@ describe('chaining', () => {
 
 describe('nesting', () => {
   it('should correctly wrap the colors on nested colors', () => {
-    assert.equal(colors.red(`R${colors.green(`G${colors.blue('B')}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[32mG\u001b[31mR\u001b[39m');
+    assert.equal(colors.red(`R${colors.green(`G${colors.blue('B')}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[39m\u001b[31m\u001b[32mG\u001b[39m\u001b[31mR\u001b[39m');
   });
 });
 
