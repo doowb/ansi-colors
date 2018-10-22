@@ -24,7 +24,7 @@ ansi-colors is _the fastest Node.js library for terminal styling_. A more perfor
 * _No dependencies_ (Chalk has 7 dependencies in its tree!)
 
 * _Safe_ - Does not modify the `String.prototype` like [colors](https://github.com/Marak/colors.js).
-* Supports [nested colors](#nested-colors), **and does not have the [nested styling bug](#nested styling bug) that is present in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur)**.
+* Supports [nested colors](#nested-colors), **and does not have the [nested styling bug](#nested-styling-bug) that is present in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur)**.
 * Supports [chained colors](#chained-colors).
 * [Toggle color support](#toggle-color-support) on or off.
 
