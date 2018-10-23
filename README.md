@@ -24,7 +24,7 @@ ansi-colors is _the fastest Node.js library for terminal styling_. A more perfor
 * _No dependencies_ (Chalk has 7 dependencies in its tree!)
 
 * _Safe_ - Does not modify the `String.prototype` like [colors](https://github.com/Marak/colors.js).
-* Supports [nested colors](#nested-colors), **and does not have the [nested styling bug](#nested-styling-bug) that is present in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur)**.
+* Supports [nested colors](#nested-colors), **and does not have the [nested styling bug](#nested-styling-bug) that is present in [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur)**.
 * Supports [chained colors](#chained-colors).
 * [Toggle color support](#toggle-color-support) on or off.
 
@@ -61,7 +61,7 @@ console.log(c.yellow(`foo ${c.red.bold('red')} bar ${c.cyan('cyan')} baz`));
 
 ### Nested styling bug
 
-`ansi-colors` does not have the nested styling bug found in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur).
+`ansi-colors` does not have the nested styling bug found in [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur).
 
 ```js
 const { bold, red } = require('ansi-styles');
@@ -81,7 +81,7 @@ console.log(chalk.bold(`foo ${chalk.red.dim('bar')} baz`));
 
 (sans icons and labels)
 
-![image](https://user-images.githubusercontent.com/383994/47280326-d2ee0580-d5a3-11e8-9611-ea6010f0a253.png)
+![image](https://user-images.githubusercontent.com/56996/47354097-bfa07e80-d6f8-11e8-9229-8082743d7a4f.jpg)
 
 ## Toggle color support
 
@@ -244,16 +244,16 @@ You might also be interested in these projects:
 
 ### Contributors
 
-| **Commits** | **Contributor** |  
-| --- | --- |  
-| 38 | [jonschlinkert](https://github.com/jonschlinkert) |  
-| 35 | [doowb](https://github.com/doowb) |  
-| 6  | [lukeed](https://github.com/lukeed) |  
-| 2  | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |  
-| 1  | [dwieeb](https://github.com/dwieeb) |  
-| 1  | [jorgebucaran](https://github.com/jorgebucaran) |  
-| 1  | [madhavarshney](https://github.com/madhavarshney) |  
-| 1  | [chapterjason](https://github.com/chapterjason) |  
+| **Commits** | **Contributor** |
+| --- | --- |
+| 38 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 35 | [doowb](https://github.com/doowb) |
+| 6  | [lukeed](https://github.com/lukeed) |
+| 2  | [Silic0nS0ldier](https://github.com/Silic0nS0ldier) |
+| 1  | [dwieeb](https://github.com/dwieeb) |
+| 1  | [jorgebucaran](https://github.com/jorgebucaran) |
+| 1  | [madhavarshney](https://github.com/madhavarshney) |
+| 1  | [chapterjason](https://github.com/chapterjason) |
 
 ### Author
 

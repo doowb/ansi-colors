@@ -7,7 +7,7 @@ const bad = red(symbols.cross);
 console.log(bold(`foo ${cyan.dim('bar')} baz`), good, gray('(ansi-colors)'));
 
 const colorette = require('colorette');
-console.log(colorette.bold(`foo ${colorette.cyan(colorette.dim('bar'))} baz`), bad, gray('(colorette)'));
+console.log(colorette.bold(`foo ${colorette.cyan(colorette.dim('bar'))} baz`), good, gray('(colorette)'));
 
 const kleur = require('kleur');
 console.log(kleur.bold(`foo ${kleur.cyan.dim('bar')} baz`), bad, gray('(kleur)'));
