@@ -97,8 +97,16 @@ define('bgWhiteBright', [107, 49], 'bgBright');
 
 /* eslint-disable no-control-regex */
 const re = colors.ansiRegex = /\u001b\[\d+m/gm;
-colors.hasColor = colors.hasAnsi = str => !!str && typeof str === 'string' && re.test(str);
-colors.unstyle = str => typeof str === 'string' ? str.replace(re, '') : str;
+colors.hasColor = colors.hasAnsi = str => {
+  re.lastIndex = 0;
+  return !!str && typeof str === 'string' && re.test(str);
+};
+
+colors.unstyle = str => {
+  re.lastIndex = 0;
+  return typeof str === 'string' ? str.replace(re, '') : str;
+};
+
 colors.none = colors.clear = colors.noop = str => str; // no-op, for programmatic usage
 colors.stripColor = colors.unstyle;
 colors.symbols = require('./symbols');

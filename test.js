@@ -172,4 +172,12 @@ describe('hasColor', () => {
     assert(!colors.hasColor('foo bar baz'));
     assert(!colors.hasAnsi('foo bar baz'));
   });
+
+  it('should return true when used multiple times', () => {
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+  });
 });
