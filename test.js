@@ -57,127 +57,127 @@ describe('ansi-colors', () => {
     assert.equal(colors.bold.white('string'), '\u001b[1m\u001b[37mstring\u001b[39m\u001b[22m');
     assert.equal(colors.bold.yellow('string'), '\u001b[1m\u001b[33mstring\u001b[39m\u001b[22m');
   });
-});
 
-describe('chaining', () => {
-  it('should create a color stack for chained colors', () => {
-    let dim = colors.dim;
-    assert.deepEqual(dim.stack, ['dim']);
-    assert.deepEqual(dim.gray.stack, ['dim', 'gray']);
-    assert.deepEqual(dim.gray.underline.stack, ['dim', 'gray', 'underline']);
+  describe('chaining', () => {
+    it('should create a color stack for chained colors', () => {
+      let dim = colors.dim;
+      assert.deepEqual(dim.stack, ['dim']);
+      assert.deepEqual(dim.gray.stack, ['dim', 'gray']);
+      assert.deepEqual(dim.gray.underline.stack, ['dim', 'gray', 'underline']);
+    });
+
+    it('should correctly reset the color stack on bound colors', () => {
+      let dim = colors.dim;
+      let foo = dim('FOO');
+      let codes = dim.gray.underline('FOO');
+      assert.equal(dim('FOO'), foo);
+      assert.equal(dim.gray.underline('FOO'), codes);
+      assert.equal(dim('FOO'), foo);
+      assert.equal(dim.gray.underline('FOO'), codes);
+      assert.equal(dim('FOO'), foo);
+    });
+
+    it('should correctly reset the color stack on chained _bound_ colors', () => {
+      let dimRed = colors.dim.red;
+      let dim = colors.dim;
+      let underline = dimRed.underline;
+      let foo = dim('FOO');
+      let codes = dimRed.underline('FOO');
+      assert.equal(dim('FOO'), foo);
+      assert.equal(dimRed.underline('FOO'), codes);
+      assert.equal(dim('FOO'), foo);
+      assert.equal(dimRed.underline('FOO'), codes);
+      assert.equal(dim('FOO'), foo);
+      assert.equal(underline('foo'), colors.dim.red.underline('foo'));
+
+      let redBold = colors.red.bold;
+      let blueBold = colors.red.blue.bold('Blue Bold');
+      assert.equal(blueBold, '\u001b[31m\u001b[34m\u001b[1mBlue Bold\u001b[22m\u001b[39m\u001b[31m\u001b[39m');
+      assert.equal(redBold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
+      assert.equal(colors.red.bold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
+    });
   });
 
-  it('should correctly reset the color stack on bound colors', () => {
-    let dim = colors.dim;
-    let foo = dim('FOO');
-    let codes = dim.gray.underline('FOO');
-    assert.equal(dim('FOO'), foo);
-    assert.equal(dim.gray.underline('FOO'), codes);
-    assert.equal(dim('FOO'), foo);
-    assert.equal(dim.gray.underline('FOO'), codes);
-    assert.equal(dim('FOO'), foo);
+  describe('nesting', () => {
+    it('should correctly wrap the colors on nested colors', () => {
+      assert.equal(colors.red(`R${colors.green(`G${colors.blue('B')}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[39m\u001b[31m\u001b[32mG\u001b[39m\u001b[31mR\u001b[39m');
+    });
   });
 
-  it('should correctly reset the color stack on chained _bound_ colors', () => {
-    let dimRed = colors.dim.red;
-    let dim = colors.dim;
-    let underline = dimRed.underline;
-    let foo = dim('FOO');
-    let codes = dimRed.underline('FOO');
-    assert.equal(dim('FOO'), foo);
-    assert.equal(dimRed.underline('FOO'), codes);
-    assert.equal(dim('FOO'), foo);
-    assert.equal(dimRed.underline('FOO'), codes);
-    assert.equal(dim('FOO'), foo);
-    assert.equal(underline('foo'), colors.dim.red.underline('foo'));
-
-    let redBold = colors.red.bold;
-    let blueBold = colors.red.blue.bold('Blue Bold');
-    assert.equal(blueBold, '\u001b[31m\u001b[34m\u001b[1mBlue Bold\u001b[22m\u001b[39m\u001b[31m\u001b[39m');
-    assert.equal(redBold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
-    assert.equal(colors.red.bold('Red Bold'), '\u001b[31m\u001b[1mRed Bold\u001b[22m\u001b[39m');
-  });
-});
-
-describe('nesting', () => {
-  it('should correctly wrap the colors on nested colors', () => {
-    assert.equal(colors.red(`R${colors.green(`G${colors.blue('B')}G`)}R`), '\u001b[31mR\u001b[32mG\u001b[34mB\u001b[39m\u001b[31m\u001b[32mG\u001b[39m\u001b[31mR\u001b[39m');
-  });
-});
-
-describe('newlines', () => {
-  it('should correctly wrap colors around newlines', () => {
-    assert.equal(colors.bgRed('foo\nbar') + 'baz qux', '\u001b[41mfoo\u001b[49m\n\u001b[41mbar\u001b[49mbaz qux');
-  });
-});
-
-describe('enabled', () => {
-  it('should disable ansi styling when colors.enabled is false', () => {
-    colors.enabled = false;
-    assert.equal(colors.red('foo bar'), 'foo bar');
-    assert.equal(colors.blue('foo bar'), 'foo bar');
-    assert.equal(colors.bold('foo bar'), 'foo bar');
-    colors.enabled = true;
-  });
-});
-
-describe('FORCE_COLOR', () => {
-  beforeEach(() => {
-    delete process.env.FORCE_COLOR;
-    decache('./');
+  describe('newlines', () => {
+    it('should correctly wrap colors around newlines', () => {
+      assert.equal(colors.bgRed('foo\nbar') + 'baz qux', '\u001b[41mfoo\u001b[49m\n\u001b[41mbar\u001b[49mbaz qux');
+    });
   });
 
-  it('should be enabled if FORCE_COLOR is not set', () => {
-    const colors = require('./');
-    assert.equal(colors.enabled, true);
+  describe('enabled', () => {
+    it('should disable ansi styling when colors.enabled is false', () => {
+      colors.enabled = false;
+      assert.equal(colors.red('foo bar'), 'foo bar');
+      assert.equal(colors.blue('foo bar'), 'foo bar');
+      assert.equal(colors.bold('foo bar'), 'foo bar');
+      colors.enabled = true;
+    });
   });
 
-  it('should be enabled if FORCE_COLOR is set to 1', () => {
-    process.env.FORCE_COLOR = '1';
-    const colors = require('./');
-    assert.equal(colors.enabled, true);
+  describe('FORCE_COLOR', () => {
+    beforeEach(() => {
+      delete process.env.FORCE_COLOR;
+      decache('./');
+    });
+
+    it('should be enabled if FORCE_COLOR is not set', () => {
+      const colors = require('./');
+      assert.equal(colors.enabled, true);
+    });
+
+    it('should be enabled if FORCE_COLOR is set to 1', () => {
+      process.env.FORCE_COLOR = '1';
+      const colors = require('./');
+      assert.equal(colors.enabled, true);
+    });
+
+    it('should be disabled if FORCE_COLOR is set to 0', () => {
+      process.env.FORCE_COLOR = '0';
+      const colors = require('./');
+      assert.equal(colors.enabled, false);
+    });
   });
 
-  it('should be disabled if FORCE_COLOR is set to 0', () => {
-    process.env.FORCE_COLOR = '0';
-    const colors = require('./');
-    assert.equal(colors.enabled, false);
-  });
-});
-
-describe('visible', () => {
-  it('should mute output when colors.visible is false', () => {
-    colors.visible = false;
-    assert.equal(colors.red('foo bar'), '');
-    assert.equal(colors.blue('foo bar'), '');
-    assert.equal(colors.bold('foo bar'), '');
-    colors.visible = true;
-  });
-});
-
-describe('unstyle', () => {
-  it('should strip ANSI codes', () => {
-    assert.equal(colors.unstyle(colors.blue.bold('foo bar baz')), 'foo bar baz');
-    assert.equal(colors.stripColor(colors.blue.bold('foo bar baz')), 'foo bar baz');
-  });
-});
-
-describe('hasColor', () => {
-  it('should return true if a string has ansi styling', () => {
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
-    assert(colors.hasAnsi(colors.blue.bold('foo bar baz')));
+  describe('visible', () => {
+    it('should mute output when colors.visible is false', () => {
+      colors.visible = false;
+      assert.equal(colors.red('foo bar'), '');
+      assert.equal(colors.blue('foo bar'), '');
+      assert.equal(colors.bold('foo bar'), '');
+      colors.visible = true;
+    });
   });
 
-  it('should return false if a string does not have ansi styling', () => {
-    assert(!colors.hasColor('foo bar baz'));
-    assert(!colors.hasAnsi('foo bar baz'));
+  describe('unstyle', () => {
+    it('should strip ANSI codes', () => {
+      assert.equal(colors.unstyle(colors.blue.bold('foo bar baz')), 'foo bar baz');
+      assert.equal(colors.stripColor(colors.blue.bold('foo bar baz')), 'foo bar baz');
+    });
   });
 
-  it('should return true when used multiple times', () => {
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
-    assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+  describe('hasColor', () => {
+    it('should return true if a string has ansi styling', () => {
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+      assert(colors.hasAnsi(colors.blue.bold('foo bar baz')));
+    });
+
+    it('should return false if a string does not have ansi styling', () => {
+      assert(!colors.hasColor('foo bar baz'));
+      assert(!colors.hasAnsi('foo bar baz'));
+    });
+
+    it('should return true when used multiple times', () => {
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+      assert(colors.hasColor(colors.blue.bold('foo bar baz')));
+    });
   });
 });

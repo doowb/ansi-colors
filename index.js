@@ -96,7 +96,10 @@ define('bgCyanBright', [106, 49], 'bgBright');
 define('bgWhiteBright', [107, 49], 'bgBright');
 
 /* eslint-disable no-control-regex */
-const re = colors.ansiRegex = /\u001b\[\d+m/gm;
+// this is a modified, optimized version of
+// https://github.com/chalk/ansi-regex (MIT License)
+const re = colors.ansiRegex = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(?:(?:[0-9]{1,4}(;[0-9]{0,4})*)?[~0-9=<>cf-nqrtyA-PRZ]))/g;
+
 colors.hasColor = colors.hasAnsi = str => {
   re.lastIndex = 0;
   return !!str && typeof str === 'string' && re.test(str);
