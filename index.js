@@ -19,7 +19,7 @@ const wrap = (style, str, nl) => {
   // see https://github.com/chalk/chalk/pull/92, thanks to the
   // chalk contributors for this fix. However, we've confirmed that
   // this issue is also present in Windows terminals
-  return nl ? str.replace(/\r?\n/g, `${close}$&${open}`) : str;
+  return nl ? str.replace(/\r*\n/g, `${close}$&${open}`) : str;
 };
 
 const style = (input, stack) => {
@@ -39,6 +39,11 @@ const define = (name, codes, type) => {
   t.push(name);
 
   Reflect.defineProperty(colors, name, {
+    configurable: true,
+    enumerable: true,
+    set(value) {
+      colors.alias(name, value);
+    },
     get() {
       let color = input => style(input, color.stack);
       Reflect.setPrototypeOf(color, colors);
@@ -108,6 +113,30 @@ colors.hasColor = colors.hasAnsi = str => {
 colors.unstyle = str => {
   re.lastIndex = 0;
   return typeof str === 'string' ? str.replace(re, '') : str;
+};
+
+colors.alias = (name, color) => {
+  let fn = typeof color === 'string' ? colors[color] : color;
+  Reflect.defineProperty(colors, name, {
+    configurable: true,
+    enumerable: true,
+    set(value) {
+      colors.alias(name, value);
+    },
+    get() {
+      let color = input => style(input, color.stack);
+      Reflect.setPrototypeOf(color, colors);
+      color.stack = this.stack ? this.stack.concat(fn.stack) : fn.stack;
+      return color;
+    }
+  });
+};
+
+colors.theme = obj => {
+  for (let name of Object.keys(obj)) {
+    colors.alias(name, obj[name]);
+  }
+  return colors;
 };
 
 colors.none = colors.clear = colors.noop = str => str; // no-op, for programmatic usage
