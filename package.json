@@ -29,10 +29,10 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "decache": "^4.4.0",
-    "gulp-format-md": "^1.0.0",
+    "decache": "^4.5.1",
+    "gulp-format-md": "^2.0.0",
     "justified": "^1.0.1",
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.4",
     "text-table": "^0.2.0"
   },
   "keywords": [
