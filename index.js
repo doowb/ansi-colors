@@ -15,6 +15,7 @@ const create = () => {
   };
 
   const wrap = (style, str, nl) => {
+    if (typeof style === 'function') return style.call(style, str);
     let { open, close, regex } = style;
     str = open + (str.includes(close) ? str.replace(regex, close + open) : str) + close;
     // see https://github.com/chalk/chalk/pull/92, thanks to the
@@ -30,7 +31,7 @@ const create = () => {
     let str = '' + input;
     let nl = str.includes('\n');
     let n = stack.length;
-    while (n-- > 0) str = wrap(colors.styles[stack[n]], str, nl);
+    while (n-- > 0) str = wrap(colors.styles[stack[n]], str, nl)
     return str;
   };
 
@@ -118,6 +119,12 @@ const create = () => {
 
   colors.alias = (name, color) => {
     let fn = typeof color === 'string' ? colors[color] : color;
+
+    if (!fn.stack) {
+      colors.styles[name] = fn;
+      fn.stack = [name];
+    }
+
     Reflect.defineProperty(colors, name, {
       configurable: true,
       enumerable: true,
@@ -140,7 +147,7 @@ const create = () => {
     return colors;
   };
 
-  colors.none = colors.clear = colors.noop = str => str; // no-op, for programmatic usage
+  colors.none = colors.clear = colors.noop = colors.reset; // no-op, for programmatic usage
   colors.stripColor = colors.unstyle;
   colors.symbols = require('./symbols');
   colors.define = define;
