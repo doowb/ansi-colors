@@ -1,5 +1,12 @@
 'use strict';
 
+const isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
+const identity = val => val;
+
+/* eslint-disable no-control-regex */
+// this is a modified version of https://github.com/chalk/ansi-regex (MIT License)
+const ANSI_REGEX = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(?:(?:[0-9]{1,4}(;[0-9]{0,4})*)?[~0-9=<>cf-nqrtyA-PRZ]))/g;
+
 const create = () => {
   const colors = { enabled: true, visible: true, styles: {}, keys: {} };
 
@@ -8,20 +15,22 @@ const create = () => {
   }
 
   const ansi = style => {
-    style.open = `\u001b[${style.codes[0]}m`;
-    style.close = `\u001b[${style.codes[1]}m`;
-    style.regex = new RegExp(`\\u001b\\[${style.codes[1]}m`, 'g');
+    let open = style.open = `\u001b[${style.codes[0]}m`;
+    let close = style.close = `\u001b[${style.codes[1]}m`;
+    let regex = style.regex = new RegExp(`\\u001b\\[${style.codes[1]}m`, 'g');
+    style.wrap = (input, newline) => {
+      if (input.includes(close)) input = input.replace(regex, close + open);
+      let output = open + input + close;
+      // see https://github.com/chalk/chalk/pull/92, thanks to the
+      // chalk contributors for this fix. However, we've confirmed that
+      // this issue is also present in Windows terminals
+      return newline ? output.replace(/\r*\n/g, `${close}$&${open}`) : output;
+    };
     return style;
   };
 
-  const wrap = (style, str, nl) => {
-    if (typeof style === 'function') return style.call(style, str);
-    let { open, close, regex } = style;
-    str = open + (str.includes(close) ? str.replace(regex, close + open) : str) + close;
-    // see https://github.com/chalk/chalk/pull/92, thanks to the
-    // chalk contributors for this fix. However, we've confirmed that
-    // this issue is also present in Windows terminals
-    return nl ? str.replace(/\r*\n/g, `${close}$&${open}`) : str;
+  const wrap = (style, input, newline) => {
+    return typeof style === 'function' ? style(input) : style.wrap(input, newline);
   };
 
   const style = (input, stack) => {
@@ -31,14 +40,17 @@ const create = () => {
     let str = '' + input;
     let nl = str.includes('\n');
     let n = stack.length;
-    while (n-- > 0) str = wrap(colors.styles[stack[n]], str, nl)
+    if (n > 0 && stack.includes('unstyle')) {
+      stack = [...new Set(['unstyle', ...stack])].reverse();
+    }
+    while (n-- > 0) str = wrap(colors.styles[stack[n]], str, nl);
     return str;
   };
 
   const define = (name, codes, type) => {
     colors.styles[name] = ansi({ name, codes });
-    let t = colors.keys[type] || (colors.keys[type] = []);
-    t.push(name);
+    let keys = colors.keys[type] || (colors.keys[type] = []);
+    keys.push(name);
 
     Reflect.defineProperty(colors, name, {
       configurable: true,
@@ -102,25 +114,21 @@ const create = () => {
   define('bgCyanBright', [106, 49], 'bgBright');
   define('bgWhiteBright', [107, 49], 'bgBright');
 
-  /* eslint-disable no-control-regex */
-  // this is a modified, optimized version of
-  // https://github.com/chalk/ansi-regex (MIT License)
-  const re = colors.ansiRegex = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(?:(?:[0-9]{1,4}(;[0-9]{0,4})*)?[~0-9=<>cf-nqrtyA-PRZ]))/g;
-
+  colors.ansiRegex = ANSI_REGEX;
   colors.hasColor = colors.hasAnsi = str => {
-    re.lastIndex = 0;
-    return !!str && typeof str === 'string' && re.test(str);
-  };
-
-  colors.unstyle = str => {
-    re.lastIndex = 0;
-    return typeof str === 'string' ? str.replace(re, '') : str;
+    colors.ansiRegex.lastIndex = 0;
+    return typeof str === 'string' && str !== '' && colors.ansiRegex.test(str);
   };
 
   colors.alias = (name, color) => {
     let fn = typeof color === 'string' ? colors[color] : color;
 
+    if (typeof fn !== 'function') {
+      throw new TypeError('Expected alias to be the name of an existing color (string) or a function');
+    }
+
     if (!fn.stack) {
+      Reflect.defineProperty(fn, 'name', { value: name });
       colors.styles[name] = fn;
       fn.stack = [name];
     }
@@ -140,14 +148,25 @@ const create = () => {
     });
   };
 
-  colors.theme = obj => {
-    for (let name of Object.keys(obj)) {
-      colors.alias(name, obj[name]);
+  colors.theme = custom => {
+    if (!isObject(custom)) throw new TypeError('Expected theme to be an object');
+    for (let name of Object.keys(custom)) {
+      colors.alias(name, custom[name]);
     }
     return colors;
   };
 
-  colors.none = colors.clear = colors.noop = colors.reset; // no-op, for programmatic usage
+  colors.alias('unstyle', str => {
+    if (typeof str === 'string' && str !== '') {
+      colors.ansiRegex.lastIndex = 0;
+      return str.replace(colors.ansiRegex, '');
+    }
+    return '';
+  });
+
+  colors.alias('noop', str => str);
+  colors.none = colors.clear = colors.noop;
+
   colors.stripColor = colors.unstyle;
   colors.symbols = require('./symbols');
   colors.define = define;
