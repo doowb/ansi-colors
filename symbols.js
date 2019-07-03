@@ -32,8 +32,7 @@ const common = {
   upDownArrow: '↕'
 };
 
-const windows = {
-  ...common,
+const windows = Object.assign({}, common, {
   check: '√',
   cross: '×',
   ellipsisLarge: '...',
@@ -46,10 +45,9 @@ const windows = {
   radioOff: '( )',
   radioOn: '(*)',
   warning: '‼'
-};
+});
 
-const other = {
-  ...common,
+const other = Object.assign({}, common, {
   ballotCross: '✘',
   check: '✔',
   cross: '✖',
@@ -64,7 +62,7 @@ const other = {
   radioOff: '◯',
   radioOn: '◉',
   warning: '⚠'
-};
+});
 
 module.exports = (isWindows && !isHyper) ? windows : other;
 Reflect.defineProperty(module.exports, 'common', { enumerable: false, value: common });
