@@ -4,14 +4,81 @@
 // Integrated by: Jordan Mele <https://github.com/Silic0nS0ldier>
 
 interface SymbolsType {
-  check: string;
-  cross: string;
-  info: string;
-  line: string;
-  pointer: string;
-  pointerSmall: string;
-  question: string;
-  warning: string;
+  /**
+   * `undefined` on windows, `✘` on other platforms.
+   */
+  ballotCross?: "✘";
+  ballotDisabled: "☒";
+  ballotOff: "☐";
+  ballotOn: "☑";
+  bullet: "•";
+  bulletWhite: "◦";
+  /**
+   * `√` on windows, `✔` on other platforms.
+   */
+  check: "√" | "✔";
+  /**
+   * `×` on windows, `✖` on other platforms.
+   */
+  cross: "×" | "✖";
+  /**
+   * `...` on windows, `⋯` on other platforms.
+   */
+  ellipsisLarge: "..." | "⋯";
+  /**
+   * `...` on windows, `…` on other platforms.
+   */
+  ellipsis: "..." | "…";
+  fullBlock: "█";
+  heart: "❤";
+  identicalTo: "≡";
+  info: "i" | "ℹ";
+  line: "─";
+  mark: "※";
+  middot: "·";
+  minus: "－";
+  multiplication: "×";
+  obelus: "÷";
+  pencilDownRight: "✎";
+  pencilRight: "✏";
+  pencilUpRight: "✐";
+  percent: "%";
+  pilcrow2: "❡";
+  pilcrow: "¶";
+  plusMinus: "±";
+  /**
+   * `>` on windows, `▸` on linux, and `❯` on other platforms.
+   */
+  pointer: ">" | "▸" | "❯";
+  /**
+   * `»` on windows, `‣` on linux, and `›` on other platforms.
+   */
+  pointerSmall: "»" | "‣" | "›";
+  question: "?";
+  /**
+   * `undefined` on windows, `？` on other platforms.
+   */
+  questionFull?: "？";
+  /**
+   * `?` on windows, `﹖` on other platforms.
+   */
+  questionSmall: "?" | "﹖";
+  /**
+   * `( )` on windows, `◯` on other platforms.
+   */
+  radioOff: "( )" | "◯";
+  /**
+   * `(*)` on windows, `◉` on other platforms.
+   */
+  radioOn: "(*)" | "◉";
+  section: "§";
+  starsOff: "☆";
+  starsOn: "★";
+  upDownArrow: "↕";
+  /**
+   * `‼` on windows, `⚠` on other platforms.
+   */
+  warning: "‼" | "⚠";
 }
 
 type StyleArrayStructure = [number, number];

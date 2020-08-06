@@ -60,3 +60,49 @@ s = colors.unstyle(colors.red("hello"));
 s = colors.strip(colors.red("hello"));
 
 s = colors.ok("deployment succeeded!");
+
+// common symbols
+s = colors.symbols.ballotDisabled;
+s = colors.symbols.ballotOff;
+s = colors.symbols.ballotOn;
+s = colors.symbols.bullet;
+s = colors.symbols.bulletWhite;
+s = colors.symbols.fullBlock;
+s = colors.symbols.heart;
+s = colors.symbols.identicalTo;
+s = colors.symbols.line;
+s = colors.symbols.mark;
+s = colors.symbols.middot;
+s = colors.symbols.minus;
+s = colors.symbols.multiplication;
+s = colors.symbols.obelus;
+s = colors.symbols.pencilDownRight;
+s = colors.symbols.pencilRight;
+s = colors.symbols.pencilUpRight;
+s = colors.symbols.percent;
+s = colors.symbols.pilcrow2;
+s = colors.symbols.pilcrow;
+s = colors.symbols.plusMinus;
+s = colors.symbols.section;
+s = colors.symbols.starsOff;
+s = colors.symbols.starsOn;
+s = colors.symbols.upDownArrow;
+
+// conditional symbols (differ across platforms)
+s = colors.symbols.check;
+s = colors.symbols.cross;
+s = colors.symbols.ellipsisLarge;
+s = colors.symbols.ellipsis;
+s = colors.symbols.info;
+s = colors.symbols.question;
+s = colors.symbols.questionSmall;
+s = colors.symbols.pointer;
+s = colors.symbols.pointerSmall;
+s = colors.symbols.radioOff;
+s = colors.symbols.radioOn;
+s = colors.symbols.warning;
+
+let maybeString: string | undefined;
+// unmatched other symbols (may be undefined)
+maybeString = colors.symbols.ballotCross;
+maybeString = colors.symbols.questionFull;
