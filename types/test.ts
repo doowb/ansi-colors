@@ -61,6 +61,8 @@ s = colors.strip(colors.red("hello"));
 
 s = colors.ok("deployment succeeded!");
 
+s = colors.create().reset("hello");
+
 // common symbols
 s = colors.symbols.ballotDisabled;
 s = colors.symbols.ballotOff;
