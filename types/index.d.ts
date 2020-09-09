@@ -90,9 +90,6 @@ interface StyleArrayProperties {
 
 type StyleType = StyleArrayStructure & StyleArrayProperties;
 
-export interface StyleFunction extends StylesType<StyleFunction> {
-  (s: string): string;
-}
 
 interface StylesType<T> {
   // modifiers
@@ -148,81 +145,91 @@ interface StylesType<T> {
   bgWhiteBright: T;
 }
 
-// modifiers
-export const reset: StyleFunction;
-export const bold: StyleFunction;
-export const dim: StyleFunction;
-export const italic: StyleFunction;
-export const underline: StyleFunction;
-export const inverse: StyleFunction;
-export const hidden: StyleFunction;
-export const strikethrough: StyleFunction;
+declare namespace ansiColors {
+  interface StyleFunction extends StylesType<StyleFunction> {
+    (s: string): string;
+  }
 
-// colors
-export const black: StyleFunction;
-export const red: StyleFunction;
-export const green: StyleFunction;
-export const yellow: StyleFunction;
-export const blue: StyleFunction;
-export const magenta: StyleFunction;
-export const cyan: StyleFunction;
-export const white: StyleFunction;
-export const gray: StyleFunction;
-export const grey: StyleFunction;
+  // modifiers
+  const reset: StyleFunction;
+  const bold: StyleFunction;
+  const dim: StyleFunction;
+  const italic: StyleFunction;
+  const underline: StyleFunction;
+  const inverse: StyleFunction;
+  const hidden: StyleFunction;
+  const strikethrough: StyleFunction;
 
-// bright colors
-export const blackBright: StyleFunction;
-export const redBright: StyleFunction;
-export const greenBright: StyleFunction;
-export const yellowBright: StyleFunction;
-export const blueBright: StyleFunction;
-export const magentaBright: StyleFunction;
-export const cyanBright: StyleFunction;
-export const whiteBright: StyleFunction;
+  // colors
+  const black: StyleFunction;
+  const red: StyleFunction;
+  const green: StyleFunction;
+  const yellow: StyleFunction;
+  const blue: StyleFunction;
+  const magenta: StyleFunction;
+  const cyan: StyleFunction;
+  const white: StyleFunction;
+  const gray: StyleFunction;
+  const grey: StyleFunction;
 
-// background colors
-export const bgBlack: StyleFunction;
-export const bgRed: StyleFunction;
-export const bgGreen: StyleFunction;
-export const bgYellow: StyleFunction;
-export const bgBlue: StyleFunction;
-export const bgMagenta: StyleFunction;
-export const bgCyan: StyleFunction;
-export const bgWhite: StyleFunction;
+  // bright colors
+  const blackBright: StyleFunction;
+  const redBright: StyleFunction;
+  const greenBright: StyleFunction;
+  const yellowBright: StyleFunction;
+  const blueBright: StyleFunction;
+  const magentaBright: StyleFunction;
+  const cyanBright: StyleFunction;
+  const whiteBright: StyleFunction;
 
-// bright background colors
-export const bgBlackBright: StyleFunction;
-export const bgRedBright: StyleFunction;
-export const bgGreenBright: StyleFunction;
-export const bgYellowBright: StyleFunction;
-export const bgBlueBright: StyleFunction;
-export const bgMagentaBright: StyleFunction;
-export const bgCyanBright: StyleFunction;
-export const bgWhiteBright: StyleFunction;
+  // background colors
+  const bgBlack: StyleFunction;
+  const bgRed: StyleFunction;
+  const bgGreen: StyleFunction;
+  const bgYellow: StyleFunction;
+  const bgBlue: StyleFunction;
+  const bgMagenta: StyleFunction;
+  const bgCyan: StyleFunction;
+  const bgWhite: StyleFunction;
 
-export let enabled: boolean;
-export let visible: boolean;
-export const ansiRegex: RegExp;
+  // bright background colors
+  const bgBlackBright: StyleFunction;
+  const bgRedBright: StyleFunction;
+  const bgGreenBright: StyleFunction;
+  const bgYellowBright: StyleFunction;
+  const bgBlueBright: StyleFunction;
+  const bgMagentaBright: StyleFunction;
+  const bgCyanBright: StyleFunction;
+  const bgWhiteBright: StyleFunction;
 
-/**
- * Remove styles from string
- */
-export function stripColor(s: string): string;
+  let enabled: boolean;
+  let visible: boolean;
+  const ansiRegex: RegExp;
 
-/**
- * Remove styles from string
- */
-export function strip(s: string): string;
+  /**
+   * Remove styles from string
+   */
+  function stripColor(s: string): string;
 
-/**
- * Remove styles from string
- */
-export function unstyle(s: string): string;
+  /**
+   * Remove styles from string
+   */
+  function strip(s: string): string;
 
-export const styles: StylesType<StyleType>;
-export const symbols: SymbolsType;
+  /**
+   * Remove styles from string
+   */
+  function unstyle(s: string): string;
 
-/**
- * Outputs a string with check-symbol as prefix
- */
-export function ok(...args: string[]): string;
+  const styles: StylesType<StyleType>;
+  const symbols: SymbolsType;
+
+  /**
+   * Outputs a string with check-symbol as prefix
+   */
+  function ok(...args: string[]): string;
+
+  function create(): typeof ansiColors;
+}
+
+export = ansiColors;
