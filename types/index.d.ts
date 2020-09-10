@@ -147,7 +147,7 @@ interface StylesType<T> {
 
 declare namespace ansiColors {
   interface StyleFunction extends StylesType<StyleFunction> {
-    (s: string): string;
+    (s: string | number): string;
   }
 
   // modifiers
