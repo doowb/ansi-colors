@@ -68,7 +68,7 @@ const create = () => {
   };
 
   define('reset', [0, 0], 'modifier');
-  define('bold', [1, 22], 'modifier');
+  define('bold', [1, 21], 'modifier');
   define('dim', [2, 22], 'modifier');
   define('italic', [3, 23], 'modifier');
   define('underline', [4, 24], 'modifier');
