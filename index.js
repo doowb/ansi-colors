@@ -8,11 +8,12 @@ const identity = val => val;
 const ANSI_REGEX = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(?:(?:[0-9]{1,4}(;[0-9]{0,4})*)?[~0-9=<>cf-nqrtyA-PRZ]))/g;
 
 const create = () => {
-  const colors = { enabled: true, visible: true, styles: {}, keys: {} };
-
-  if ('FORCE_COLOR' in process.env) {
-    colors.enabled = process.env.FORCE_COLOR !== '0';
-  }
+  const colors = {
+    enabled: process.env.FORCE_COLOR !== '0',
+    visible: true,
+    styles: {},
+    keys: {}
+  };
 
   const ansi = style => {
     let open = style.open = `\u001b[${style.codes[0]}m`;
