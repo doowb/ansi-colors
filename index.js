@@ -1,7 +1,6 @@
 'use strict';
 
 const isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
-const identity = val => val;
 
 /* eslint-disable no-control-regex */
 // this is a modified version of https://github.com/chalk/ansi-regex (MIT License)
