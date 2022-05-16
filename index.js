@@ -6,9 +6,16 @@ const isObject = val => val !== null && typeof val === 'object' && !Array.isArra
 // this is a modified version of https://github.com/chalk/ansi-regex (MIT License)
 const ANSI_REGEX = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(?:(?:[0-9]{1,4}(;[0-9]{0,4})*)?[~0-9=<>cf-nqrtyA-PRZ]))/g;
 
+const hasColor = () => {
+  if (typeof process !== 'undefined') {
+    return process.env.FORCE_COLOR !== '0';
+  }
+  return false;
+};
+
 const create = () => {
   const colors = {
-    enabled: process.env.FORCE_COLOR !== '0',
+    enabled: hasColor(),
     visible: true,
     styles: {},
     keys: {}

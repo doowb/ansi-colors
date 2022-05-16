@@ -1,8 +1,8 @@
 'use strict';
 
-const isHyper = process.env.TERM_PROGRAM === 'Hyper';
-const isWindows = process.platform === 'win32';
-const isLinux = process.platform === 'linux';
+const isHyper = typeof process !== 'undefined' && process.env.TERM_PROGRAM === 'Hyper';
+const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
+const isLinux = typeof process !== 'undefined' && process.platform === 'linux';
 
 const common = {
   ballotDisabled: '☒',
