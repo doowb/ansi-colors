@@ -1,8 +1,16 @@
 'use strict';
 
-const isHyper = typeof process !== 'undefined' && process.env.TERM_PROGRAM === 'Hyper';
 const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
 const isLinux = typeof process !== 'undefined' && process.platform === 'linux';
+const windowsHasUnicodeSupport =
+  process &&
+  isWindows &&
+  (process.env.TERM_PROGRAM === 'vscode' ||
+    process.env.TERM_PROGRAM === 'Hyper' ||
+    process.env.TERM === 'xterm-256color' ||
+    process.env.TERM === 'alacritty' ||
+    process.env.TERMINAL_EMULATOR === 'JetBrains-JediTerm' ||
+    process.env.ConEmuTask === '{cmd::Cmder}');
 
 const common = {
   ballotDisabled: '☒',
@@ -63,7 +71,7 @@ const other = Object.assign({}, common, {
   warning: '⚠'
 });
 
-module.exports = (isWindows && !isHyper) ? windows : other;
+module.exports = (isWindows && !windowsHasUnicodeSupport) ? windows : other;
 Reflect.defineProperty(module.exports, 'common', { enumerable: false, value: common });
 Reflect.defineProperty(module.exports, 'windows', { enumerable: false, value: windows });
 Reflect.defineProperty(module.exports, 'other', { enumerable: false, value: other });
