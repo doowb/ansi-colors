@@ -307,7 +307,7 @@ You might also be interested in these projects:
 
 ### License
 
-Copyright © 2019, [Brian Woodward](https://github.com/doowb).
+Copyright © 2022, [Brian Woodward](https://github.com/doowb).
 Released under the [MIT License](LICENSE).
 
 ***
