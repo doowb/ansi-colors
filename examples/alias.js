@@ -1,4 +1,4 @@
-const colors = require('..');
+import colors from '../index.js'
 
 colors.alias('primary', colors.yellow);
 colors.alias('strong', colors.bold);

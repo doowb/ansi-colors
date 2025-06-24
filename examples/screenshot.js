@@ -1,7 +1,5 @@
-'use strict';
-
-const colors = require('..');
-const justified = require('justified');
+import colors from '../index.js';
+import justified from 'justified';
 let str = '';
 
 /**

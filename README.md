@@ -31,7 +31,7 @@ ansi-colors is _the fastest Node.js library for terminal styling_. A more perfor
 ## Usage
 
 ```js
-const c = require('ansi-colors');
+import c from 'ansi-colors';
 
 console.log(c.red('This is a red string!'));
 console.log(c.green('This is a red string!'));
@@ -64,16 +64,16 @@ console.log(c.yellow(`foo ${c.red.bold('red')} bar ${c.cyan('cyan')} baz`));
 `ansi-colors` does not have the nested styling bug found in [colorette](https://github.com/jorgebucaran/colorette), [chalk](https://github.com/chalk/chalk), and [kleur](https://github.com/lukeed/kleur).
 
 ```js
-const { bold, red } = require('ansi-styles');
+import { bold, red } from 'ansi-styles';
 console.log(bold(`foo ${red.dim('bar')} baz`));
 
-const colorette = require('colorette');
+import colorette from 'colorette';
 console.log(colorette.bold(`foo ${colorette.red(colorette.dim('bar'))} baz`));
 
-const kleur = require('kleur');
+import kleur from 'kleur';
 console.log(kleur.bold(`foo ${kleur.red.dim('bar')} baz`));
 
-const chalk = require('chalk');
+import chalk from 'chalk';
 console.log(chalk.bold(`foo ${chalk.red.dim('bar')} baz`));
 ```
 
@@ -88,13 +88,13 @@ console.log(chalk.bold(`foo ${chalk.red.dim('bar')} baz`));
 Easily enable/disable colors.
 
 ```js
-const c = require('ansi-colors');
+import c from 'ansi-colors';
 
 // disable colors manually
 c.enabled = false;
 
 // or use a library to automatically detect support
-c.enabled = require('color-support').hasBasic;
+c.enabled from 'color-support').hasBasic;
 
 console.log(c.red('I will only be colored red if the terminal supports colors'));
 ```
@@ -146,7 +146,7 @@ _(`gray` is the U.S. spelling, `grey` is more commonly used in the Canada and U.
 Create custom aliases for styles.
 
 ```js
-const colors = require('ansi-colors');
+import colors from 'ansi-colors';
 
 colors.alias('primary', colors.yellow);
 colors.alias('secondary', colors.bold);
@@ -159,7 +159,7 @@ console.log(colors.primary.secondary('Foo'));
 A theme is an object of custom aliases.
 
 ```js
-const colors = require('ansi-colors');
+import colors from 'ansi-colors';
 
 colors.theme({
   danger: colors.red,

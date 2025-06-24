@@ -1,7 +1,5 @@
-'use strict';
-
-const table = require('text-table');
-const colors = require('..');
+import table from 'text-table';
+import colors from "../index.js";
 const styles = colors.styles;
 let arr = [[]];
 let idx = 0;

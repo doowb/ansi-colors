@@ -1,7 +1,7 @@
 
-const util = require('util');
+import util from 'node:util';
 console.time('time');
-const colors = require('..');
+import colors from '../index.js'
 colors.success = (...args) => colors.bold.green(util.format(...args));
 colors.ok = (...args) => `${colors.success('✔')} ${colors.bold(util.format(...args))}`;
 console.log(colors.yellow('this is a message'))

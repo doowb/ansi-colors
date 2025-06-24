@@ -224,11 +224,6 @@ declare namespace ansiColors {
   const styles: StylesType<StyleType>;
   const symbols: SymbolsType;
 
-  /**
-   * Outputs a string with check-symbol as prefix
-   */
-  function ok(...args: string[]): string;
-
   function create(): typeof ansiColors;
 }
 

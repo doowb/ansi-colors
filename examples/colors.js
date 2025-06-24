@@ -1,5 +1,5 @@
 
-const colors = require('..');
+import colors from '../index.js'
 console.log(colors.unstyle(colors.green('this is not green!')));
 
 const cyan = colors.cyan;

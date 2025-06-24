@@ -1,4 +1,4 @@
-const colors = require('..');
+import colors from '../index.js'
 
 colors.theme({
   danger: colors.red,

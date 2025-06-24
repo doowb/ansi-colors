@@ -1,1 +1,1 @@
-module.exports = require('./colors');
+export { * as colors } from './colors.js';

@@ -1,6 +1,5 @@
-'use strict';
-const util = require('util');
-const c = require('..');
+import util from 'node:util';
+import c from '../index.js';
 console.log(c);
 
 console.log();

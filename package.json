@@ -20,6 +20,7 @@
     "symbols.js",
     "types/index.d.ts"
   ],
+  "type": "module",
   "main": "index.js",
   "types": "./types/index.d.ts",
   "engines": {

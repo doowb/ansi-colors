@@ -1,8 +1,8 @@
 console.time('grand total');
 console.time('module loaded');
-const colors = require('..');
-// const colors = require('clorox');
-// const colors = require('chalk');
+import colors from '../index.js'
+// import colors from 'clorox';
+// import colors from 'chalk';
 console.timeEnd('module loaded');
 
 colors.enabled = true;

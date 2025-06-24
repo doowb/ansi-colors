@@ -6,6 +6,7 @@
     "chalk": "^2.4.0",
     "clorox": "^2.2.0"
   },
+  "type": "module",
   "lintDeps": {
     "dependencies": {
       "files": {

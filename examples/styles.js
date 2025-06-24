@@ -1,6 +1,6 @@
 
-const util = require('util');
-const c = require('..');
+import util from "node:util";
+import c from '../index.js';
 c.info = (...args) => {
   return c.bold(c.cyan('[info] ')) + c.cyan(...args);
 };

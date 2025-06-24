@@ -1,7 +1,10 @@
+import chalk from 'chalk'
+import colors from '../index.js'
+
 const lib = process.argv[2] || 'colors';
 const libs = {
-  chalk: require('chalk'),
-  colors: require('..')
+  chalk: chalk,
+  colors: colors
 };
 const color = libs[lib];
 
