@@ -8,7 +8,7 @@ const ANSI_REGEX = /[\u001b\u009b][[\]#;?()]*(?:(?:(?:[^\W_]*;?[^\W_]*)\u0007)|(
 
 const hasColor = () => {
   if (typeof process !== 'undefined') {
-    return process.env.FORCE_COLOR !== '0';
+    return process.env.FORCE_COLOR !== '0' && process.stdout.isTTY && process.stderr.isTTY;
   }
   return false;
 };
