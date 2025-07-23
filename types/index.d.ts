@@ -229,7 +229,14 @@ declare namespace ansiColors {
    */
   function ok(...args: string[]): string;
 
-  function create(): typeof ansiColors;
+  interface Options {
+    /**
+     * Force enable or disable regardless of the environment.
+     */
+    enabled?: boolean | undefined;
+  }
+
+  function create(options?: Options): typeof ansiColors;
 }
 
 export = ansiColors;
