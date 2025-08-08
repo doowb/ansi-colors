@@ -13,10 +13,10 @@ const hasColor = () => {
   return false;
 };
 
-const create = ({ enabled } = {}) => {
+const create = ({ enabled, visible = true } = {}) => {
   const colors = {
     enabled: enabled === undefined ? hasColor() : enabled,
-    visible: true,
+    visible,
     styles: {},
     keys: {}
   };

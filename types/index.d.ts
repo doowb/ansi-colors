@@ -234,6 +234,10 @@ declare namespace ansiColors {
      * Force enable or disable regardless of the environment.
      */
     enabled?: boolean | undefined;
+    /**
+     * When set to false, all styled text will be invisible. Defaults to true.
+     */
+    visible?: boolean | undefined;
   }
 
   function create(options?: Options): typeof ansiColors;
