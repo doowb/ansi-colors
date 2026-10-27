@@ -229,6 +229,18 @@ declare namespace ansiColors {
    */
   function ok(...args: string[]): string;
 
+  /**
+   * Define a custom style using an existing style name or formatter.
+   */
+  function alias(name: string, color: string | ((s: string) => string)): void;
+
+  /**
+   * Define a group of custom styles and return the colors instance.
+   */
+  function theme<T extends { [name: string]: string | ((s: string) => string) }>(
+    custom: T
+  ): typeof ansiColors & { [K in keyof T]: StyleFunction };
+
   function create(): typeof ansiColors;
 }
 

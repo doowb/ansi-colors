@@ -108,3 +108,21 @@ let maybeString: string | undefined;
 // unmatched other symbols (may be undefined)
 maybeString = colors.symbols.ballotCross;
 maybeString = colors.symbols.questionFull;
+
+// Custom styles accept both built-in style names and formatting callbacks.
+colors.alias("primary", colors.blue.bold);
+colors.alias("secondary", "gray");
+colors.alias("custom", (value: string) => value.toUpperCase());
+
+const themed = colors.theme({
+  danger: colors.red,
+  warning: "yellow",
+  custom: (value: string) => value.toUpperCase()
+});
+s = themed.danger.bold("error");
+s = themed.warning("warning");
+s = themed.custom("custom");
+s = themed.red("built-in");
+
+colors.create().alias("primary", "blue");
+s = colors.create().theme({ primary: colors.blue }).primary("primary");
